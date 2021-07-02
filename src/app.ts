@@ -1,0 +1,13 @@
+import './styles.scss';
+import './control/obj-statistic';
+import './header/header';
+import './header/btn-sidebar';
+import './header/switcher';
+import './store/store';
+import './sidebar/sidebar';
+import './root/root';
+import './category/category';
+import './overlay/overlay';
+import './sidebar/handler';
+import './handler/handler';
+import './handler/switch-state';
