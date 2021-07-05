@@ -5,10 +5,11 @@
   width: 290px;
   padding: 100px 0 0 50px;
   top: 0;
-  height: 10000px;
+  height: 100%;
   transition: all 0.3s linear;
   z-index: 3;
   opacity: 1;
+  overflow-y: auto;
 
   &.hidden {
     transform: translateX(-300px);
@@ -52,6 +53,24 @@
       &:hover::after,
       &:focus:after {
         width: 100%;
+      }
+
+      &:last-child {
+        border: 2px solid $color-main;
+        border-radius: 5px;
+        padding: 20px 100px 20px 25px;
+        margin: 35px 0 0;
+        transition: all 0.3s ease-out;
+
+        &:hover {
+          border: 2px solid $color-additional;
+          color: $color-additional;
+        }
+
+        &:hover::after,
+        &:focus:after {
+          width: 0;
+        }
       }
     }
   }

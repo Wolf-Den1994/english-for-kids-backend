@@ -1,14 +1,14 @@
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
-import { root } from '../root/root';
 import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
 import { StateApp, Tags } from '../utils/enums';
+import { root } from '../utils/get-elems';
 import { ICards, IFullCars } from '../utils/interfaces';
 
 export const cleanField = (): void => {
   objGame.counterErrors = 0;
-  root.innerHTML = '';
+  root().innerHTML = '';
 };
 
 export const render = (
@@ -22,15 +22,15 @@ export const render = (
     layout === 'subject'
       ? cards[CATEGORY][pageNumber]
       : 'Train difficult words';
-  root.append(title);
+  root().append(title);
 
   const score = document.createElement(Tags.DIV);
   score.className = 'score';
-  root.append(score);
+  root().append(score);
 
   const general = document.createElement(Tags.DIV);
   general.className = layout === 'subject' ? 'subject' : 'diff';
-  root.append(general);
+  root().append(general);
 
   for (let i = 0; i < arrCards.length; i++) {
     const card = document.createElement(Tags.DIV);
@@ -98,7 +98,7 @@ export const render = (
       ? 'btn btn-start-game play'
       : 'btn btn-start-game';
   btnStartGame.innerHTML = 'Start game';
-  root.append(btnStartGame);
+  root().append(btnStartGame);
 };
 
 export const renderSubject = (page: number): void => {

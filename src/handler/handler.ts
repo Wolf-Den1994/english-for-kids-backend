@@ -4,7 +4,6 @@ import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { gameProcess, startGame } from '../play/game';
 import { playSound, sound } from '../play/sound';
-import { root } from '../root/root';
 import { resetStatistic } from '../statistic/reset';
 import { sortStatistic } from '../statistic/sort';
 import { changePage } from '../store/actions';
@@ -103,7 +102,7 @@ const workWithDiffTrain = (front: HTMLDivElement): void => {
   sound(obj.audioSrc, IndexSounds.FIRST);
 };
 
-const selectionHandler = (event: Event): void => {
+export const selectionHandler = (event: Event): void => {
   const elems = getArrsElem();
   const elem = event.target as HTMLElement;
   const card = elem.closest(`.${ElemClasses.MAIN_CARD}`) as HTMLDivElement;
@@ -137,5 +136,3 @@ const selectionHandler = (event: Event): void => {
     gameProcess(elem);
   }
 };
-
-root.addEventListener('click', selectionHandler);

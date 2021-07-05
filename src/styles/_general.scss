@@ -6,7 +6,8 @@ body {
   font-family: $font;
   padding: 10px;
   font-size: 16px;
-  &.hidden {
+  &.hidden,
+  &.hidden-modal {
     overflow-y: hidden;
   }
 }
@@ -35,6 +36,12 @@ body {
   &.hidden {
     opacity: 1;
     pointer-events: all;
+  }
+
+  &.hidden-modal {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 3;
   }
 }
 

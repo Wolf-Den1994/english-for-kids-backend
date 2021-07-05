@@ -1,5 +1,6 @@
 export enum ElemClasses {
   HIDDEN = 'hidden',
+  HIDDEN_MODAL = 'hidden-modal',
   IMG_CATEGORY = 'img-category',
   MAIN_CARD = 'main-card',
   FRONT = 'front',
@@ -21,6 +22,10 @@ export enum ElemClasses {
   IMG = 'img',
   GREAT = 'great',
   MENU_LINK = 'menu-link',
+  INPUT_LOGIN = 'input-login',
+  INPUT_PASSWORD = 'input-password',
+  BTN_CANCEL = 'btn-cancel',
+  BTN_LOGIN = 'btn-login',
 }
 
 export enum ElemId {
@@ -70,4 +75,5 @@ export enum NumberPage {
   MAIN = 0,
   STATISTIC = 9,
   DIFFICULT = 10,
+  LOGIN = 11,
 }

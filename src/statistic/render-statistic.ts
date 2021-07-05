@@ -1,6 +1,6 @@
 import { objApp } from '../control/objs';
-import { root } from '../root/root';
 import { Tags } from '../utils/enums';
+import { root } from '../utils/get-elems';
 import { IFullCars } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { btnDifficultWord, btnReset } from './button';
@@ -10,7 +10,7 @@ import { tbody } from './tbody';
 import { renderTitleRow, trTitle } from './tr-title';
 
 const cleareField = () => {
-  root.innerHTML = '';
+  root().innerHTML = '';
   tbody.innerHTML = '';
   table.innerHTML = '';
   trTitle.innerHTML = '';
@@ -20,7 +20,7 @@ const cleareField = () => {
 export const renderStatistic = (data: IFullCars[], order: TypeOrder): void => {
   cleareField();
 
-  root.append(mainStatistic);
+  root().append(mainStatistic);
   mainStatistic.append(btnDifficultWord);
   mainStatistic.append(btnReset);
   mainStatistic.append(table);

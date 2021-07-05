@@ -1,16 +1,16 @@
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
-import { root } from '../root/root';
 import { CATEGORY, imgCategories } from '../utils/consts';
 import { Tags } from '../utils/enums';
+import { root } from '../utils/get-elems';
 
 export const renderCategory = (): void => {
   objGame.counterErrors = 0;
-  root.innerHTML = '';
+  root().innerHTML = '';
 
   const category = document.createElement(Tags.DIV);
   category.className = 'category';
-  root.append(category);
+  root().append(category);
 
   for (let i = 0; i < cards[CATEGORY].length; i++) {
     const card = document.createElement(Tags.DIV);
@@ -29,4 +29,3 @@ export const renderCategory = (): void => {
     card.append(p);
   }
 };
-renderCategory();

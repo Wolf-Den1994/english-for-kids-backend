@@ -1,7 +1,6 @@
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
 import { objApp } from '../control/objs';
-import { input } from '../header/switcher';
 import { changeMode } from '../store/actions';
 import { store } from '../store/store';
 import { arrDifficultWord } from '../train-difficult/render-train-difficult';
@@ -57,7 +56,7 @@ const changeStateOnPlay = (
   }
 };
 
-const switchState = (event: Event): void => {
+export const switchState = (event: Event): void => {
   const elems = getArrsElem();
   const target = event.target as HTMLInputElement;
   if (target.checked) {
@@ -84,5 +83,3 @@ const switchState = (event: Event): void => {
     }
   }
 };
-
-input.addEventListener('change', switchState);

@@ -1,10 +1,10 @@
 import { fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
-import { root } from '../root/root';
 import { changePage } from '../store/actions';
 import { store } from '../store/store';
 import { cleanField, render } from '../subject/render';
 import { NumberPage, Tags } from '../utils/enums';
+import { root } from '../utils/get-elems';
 import { IFullCars } from '../utils/interfaces';
 
 export const copyFullCards: IFullCars[] = [];
@@ -35,7 +35,7 @@ export const renderTrainDifficult = (): void => {
     objApp.empryDifficult = true;
     const diffDiv = document.createElement(Tags.DIV);
     diffDiv.className = 'diff';
-    root.append(diffDiv);
+    root().append(diffDiv);
 
     const empryDiv = document.createElement(Tags.DIV);
     empryDiv.className = 'empry';
