@@ -54,6 +54,7 @@ export enum Tags {
   TR = 'tr',
   TH = 'th',
   TD = 'td',
+  FOOTER = 'footer',
 }
 
 export enum Order {
