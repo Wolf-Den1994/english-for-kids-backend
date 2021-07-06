@@ -29,6 +29,7 @@
     "@typescript-eslint/indent": ["warn", 2, {
       "SwitchCase": 1
     }],
+    "@typescript-eslint/no-explicit-any": ["off"],
     "import/prefer-default-export": "off",
     "no-param-reassign": ["error", {
       "props": false

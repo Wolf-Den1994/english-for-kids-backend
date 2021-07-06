@@ -63,10 +63,6 @@ const checkUser = (login: string, password: string): void => {
   const superUser = '1'; // !!! !!! TODO change on admin !!! !!!
   if (login === superUser && password === superUser) {
     onNavigate('/categoty');
-    const elem = document.querySelector('.elem') as HTMLElement;
-    elem.onclick = () => {
-      onNavigate('/');
-    };
     // return false;
   }
 };

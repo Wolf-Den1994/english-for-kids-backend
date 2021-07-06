@@ -1,3 +1,4 @@
+import { getCards } from '../api/api';
 import { renderMain } from '../main-page/render-main';
 
 // export const changeHome = `
@@ -6,4 +7,6 @@ import { renderMain } from '../main-page/render-main';
 
 export const changeHome = (): void => {
   renderMain();
+  getCards('/api/cards');
+  getCards('/api/fullcards');
 };

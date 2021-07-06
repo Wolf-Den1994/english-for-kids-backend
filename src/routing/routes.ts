@@ -1,4 +1,5 @@
-import { changeCategory } from './change-category';
+import { workCateg } from '../categ-page/work-categ';
+import { changeCategory, renderCateg } from './change-category';
 import { changeWords } from './change-words';
 import { changeHome } from './home';
 
@@ -23,5 +24,9 @@ export const onNavigate = (pathname: string): void => {
   } else {
     document.body.innerHTML = '';
     changeHome();
+  }
+  if (pathname === '/categoty') {
+    renderCateg();
+    workCateg();
   }
 };

@@ -1,10 +1,11 @@
-import cards from '../cards';
+import { getCards } from '../api/api';
 import { objGame } from '../control/obj-game';
 import { CATEGORY, imgCategories } from '../utils/consts';
 import { Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
 
-export const renderCategory = (): void => {
+export const renderCategory = async (): Promise<void> => {
+  const cards = await getCards('/api/cards');
   objGame.counterErrors = 0;
   root().innerHTML = '';
 

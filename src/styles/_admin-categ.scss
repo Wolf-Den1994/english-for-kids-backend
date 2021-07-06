@@ -1,0 +1,87 @@
+.categ-header {
+  padding: 16px;
+  margin: -10px -10px 30px -10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-backgr-admin;
+
+  .categ-menu {
+    max-width: 190px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .categ-link {
+    display: block;
+    height: 25px;
+    font-size: 18px;
+    font-family: $font;
+    text-decoration: none;
+    color: $color-main;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $color-additional;
+    }
+  }
+}
+
+.categ-main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .categ-card {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid $color-btn-sidebar-hover;
+    border-radius: 5px;
+    width: 280px;
+    height: 200px;
+    padding: 14px;
+
+    .categ-name {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      margin: 0 auto 20px;
+    }
+
+    .categ-count {
+      align-self: baseline;
+      margin: 0 0 50px;
+
+      .categ-words {
+        font-weight: 600;
+      }
+    }
+
+    .categ-btns {
+      display: flex;
+      justify-content: space-between;
+      align-self: stretch;
+
+      .categ-bnt-update,
+      .categ-bnt-add {
+        @include button();
+        outline: none;
+        box-shadow: none;
+        cursor: pointer;
+        border: none;
+        border: 2px solid $color-backgr-admin;
+        border-radius: 5px;
+        width: 100px;
+        padding: 9px;
+        background-color: transparent;
+
+        &:hover {
+          background-color: $color-backgr-modal-additional;
+        }
+      }
+    }
+  }
+}

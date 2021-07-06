@@ -1,6 +1,6 @@
 import './styles.scss';
-import './control/obj-statistic';
 import './routing/routes';
+import './control/obj-statistic';
 import './header/header';
 import './header/btn-sidebar';
 import './header/switcher';
