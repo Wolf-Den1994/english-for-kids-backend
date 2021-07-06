@@ -1,5 +1,6 @@
 import { renderCategory } from '../category/category';
 import { removeFinal } from '../finish/finish';
+import { renderFooter } from '../footer/footer';
 import { selectionHandler } from '../handler/handler';
 import { switchState } from '../handler/switch-state';
 import { renderBtnSidebar } from '../header/btn-sidebar';
@@ -21,6 +22,7 @@ export const renderMain = (): void => {
   renderRoot();
   renderCategory();
   renderOverlay();
+  renderFooter();
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
   label().addEventListener('click', handlerSideBar);
   menu().addEventListener('click', handlerMenu);
