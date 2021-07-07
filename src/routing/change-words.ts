@@ -1,23 +1,20 @@
 import { getCards } from '../api/api';
 import { head } from '../shareit/head';
+import { changeAdminCategory } from '../store/actions';
+import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
 import { selectTitle } from '../utils/get-elems-words';
 import { ICards } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
-const selectCategory = (event: Event) => {
-  const target = event.target as HTMLSelectElement;
-  console.log(target.value);
-};
-
 const pointThisWords = (
   cards: [string[], ...ICards[][]],
   wrapper: HTMLDivElement,
+  index: number,
 ) => {
-  selectTitle().addEventListener('change', selectCategory);
-  const index = cards[CATEGORY].indexOf(selectTitle().value);
-  console.log(cards[index + 1]);
+  wrapper.innerHTML = '';
+
   cards[index + 1].forEach((item: string | ICards) => {
     if (typeof item === 'object') {
       const card = document.createElement(Tags.DIV);
@@ -70,6 +67,19 @@ const pointThisWords = (
   });
 };
 
+const selectCategory = (
+  cards: [string[], ...ICards[][]],
+  wrapper: HTMLDivElement,
+  event: Event,
+) => {
+  const target = event.target as HTMLSelectElement;
+
+  const index = cards[CATEGORY].indexOf(target.value);
+  store.dispatch(changeAdminCategory(target.value));
+
+  pointThisWords(cards, wrapper, index);
+};
+
 export const changeWords = `${head('words')}`;
 
 export const renderWordsPage = async (): Promise<void> => {
@@ -102,5 +112,13 @@ export const renderWordsPage = async (): Promise<void> => {
   wrapperCards.className = 'words-wrapper-cards';
   main.append(wrapperCards);
 
-  pointThisWords(cards, wrapperCards);
+  selectTitle().addEventListener(
+    'change',
+    selectCategory.bind(null, cards, wrapperCards),
+  );
+
+  const index = cards[CATEGORY].indexOf(store.getState().admCateg);
+  selectTitle().value = `${store.getState().admCateg}`;
+
+  pointThisWords(cards, wrapperCards, index);
 };
