@@ -1,4 +1,5 @@
 import { getCards } from '../api/api';
+import { handlingClicks } from '../page-works/handling-clicks';
 import { head } from '../shareit/head';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
@@ -15,6 +16,7 @@ export const renderCategPage = async (): Promise<void> => {
   for (let i = 0; i < cards[CATEGORY].length; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'categ-card';
+    card.id = `${cards[CATEGORY][i]}`;
     main.append(card);
 
     const name = document.createElement(Tags.P);
@@ -56,4 +58,6 @@ export const renderCategPage = async (): Promise<void> => {
   name.className = 'categ-name categ-name-new';
   name.innerHTML = `Create new Category`;
   card.append(name);
+
+  handlingClicks(main, cards);
 };
