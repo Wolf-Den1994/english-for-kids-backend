@@ -34,6 +34,7 @@
   flex-wrap: wrap;
 
   .categ-card {
+    position: relative;
     margin: 10px;
     display: flex;
     flex-direction: column;
@@ -77,11 +78,59 @@
         width: 100px;
         padding: 9px;
         background-color: transparent;
+        color: $color-backgr-admin;
+        transition: all 0.3s;
 
         &:hover {
           background-color: $color-backgr-modal-additional;
+          color: $color-final-text;
+          font-weight: 600;
         }
       }
+    }
+
+    .categ-bnt-remove {
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      top: 5px;
+      right: 7px;
+      transform: rotate(45deg);
+      cursor: pointer;
+
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        background: $color-text;
+      }
+
+      &:before {
+        left: 50%;
+        width: 15%;
+        margin-left: -9%;
+        height: 100%;
+      }
+
+      &:after {
+        top: 50%;
+        height: 15%;
+        margin-top: -9%;
+        width: 100%;
+      }
+    }
+  }
+
+  .categ-card-new {
+    background-image: url(./assets/image/add.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background-size: 33%;
     }
   }
 }

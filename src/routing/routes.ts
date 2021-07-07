@@ -1,6 +1,6 @@
-import { workCateg } from '../categ-page/work-categ';
-import { changeCategory, renderCateg } from './change-category';
-import { changeWords } from './change-words';
+import { workCategPage, workWordsPage } from '../page-works/work-categ';
+import { changeCategory, renderCategPage } from './change-category';
+import { changeWords, renderWordsPage } from './change-words';
 import { changeHome } from './home';
 
 interface IRoutes {
@@ -26,7 +26,11 @@ export const onNavigate = (pathname: string): void => {
     changeHome();
   }
   if (pathname === '/categoty') {
-    renderCateg();
-    workCateg();
+    renderCategPage();
+    workCategPage();
+  }
+  if (pathname === '/words') {
+    renderWordsPage();
+    workWordsPage();
   }
 };

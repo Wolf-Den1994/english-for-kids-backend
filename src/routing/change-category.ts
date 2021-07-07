@@ -1,21 +1,12 @@
-// import { tickets } from "../api/api";
 import { getCards } from '../api/api';
+import { head } from '../shareit/head';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
 import { removeClassList } from '../utils/remove-class';
 
-export const changeCategory = `
-  <header class="categ-header">
-    <nav class="categ-menu">
-      <a href="#" class="categ-link categ-link-categ">Categories</a>
-      <a href="#" class="categ-link categ-link-words">Words</a>
-    </nav>
-    <a href="#" class="categ-link categ-link-out">Log out</a>
-  </header>
-  <main class="categ-main"></main>
-`;
+export const changeCategory = `${head('categ')}`;
 
-export const renderCateg = async (): Promise<void> => {
+export const renderCategPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   const cards = await getCards('/api/cards');
@@ -56,4 +47,13 @@ export const renderCateg = async (): Promise<void> => {
     btnRemove.className = 'categ-bnt-remove';
     card.append(btnRemove);
   }
+
+  const card = document.createElement(Tags.DIV);
+  card.className = 'categ-card categ-card-new';
+  main.append(card);
+
+  const name = document.createElement(Tags.P);
+  name.className = 'categ-name categ-name-new';
+  name.innerHTML = `Create new Category`;
+  card.append(name);
 };
