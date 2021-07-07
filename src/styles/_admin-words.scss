@@ -144,5 +144,25 @@
         }
       }
     }
+
+    .words-card-new {
+      justify-content: normal;
+      background-image: url(./assets/image/add.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background-size: 33%;
+      }
+
+      .words-name {
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+        margin: 0 auto 20px;
+      }
+    }
   }
 }

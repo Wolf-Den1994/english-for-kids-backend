@@ -1406,4 +1406,27 @@ body.hidden, body.hidden-modal {
   margin-top: -9%;
   width: 100%;
 }
+
+.words-main .words-wrapper-cards .words-card-new {
+  -webkit-box-pack: normal;
+      -ms-flex-pack: normal;
+          justify-content: normal;
+  background-image: url(./assets/image/add.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.words-main .words-wrapper-cards .words-card-new:hover {
+  background-size: 33%;
+}
+
+.words-main .words-wrapper-cards .words-card-new .words-name {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 auto 20px;
+}
 /*# sourceMappingURL=styles.css.map */

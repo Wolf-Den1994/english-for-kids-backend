@@ -121,4 +121,13 @@ export const renderWordsPage = async (): Promise<void> => {
   selectTitle().value = `${store.getState().admCateg}`;
 
   pointThisWords(cards, wrapperCards, index);
+
+  const card = document.createElement(Tags.DIV);
+  card.className = 'words-card words-card-new';
+  wrapperCards.append(card);
+
+  const newWord = document.createElement(Tags.P);
+  newWord.className = 'words-name words-name-new';
+  newWord.innerHTML = `Add new word`;
+  card.append(newWord);
 };
