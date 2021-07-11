@@ -150,7 +150,8 @@
         align-items: center;
 
         .categ-top-layer-btn-cancel,
-        .categ-top-layer-btn-create {
+        .categ-top-layer-btn-create,
+        .categ-top-layer-btn-update {
           @include button();
           outline: none;
           box-shadow: none;

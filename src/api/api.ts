@@ -1,3 +1,5 @@
+import { IUserData } from '../utils/interfaces';
+
 // const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 const baseURL = 'http://localhost';
 
@@ -26,6 +28,7 @@ export async function putCards(data: IDataPut): Promise<void> {
   });
   if (response.ok === true) {
     const card = await response.text();
+    // eslint-disable-next-line no-console
     console.log(card);
   }
 }
@@ -37,6 +40,39 @@ export async function deleteCards(id: string): Promise<void> {
   });
   if (response.ok === true) {
     const card = await response.text();
+    // eslint-disable-next-line no-console
     console.log(card);
   }
+}
+
+export async function createCards(newCategory: string): Promise<void> {
+  const response = await fetch(`${baseURL}/api/cards/`, {
+    method: 'POST',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ newCategory }),
+  });
+  if (response.ok === true) {
+    const card = await response.text();
+    // eslint-disable-next-line no-console
+    console.log(card);
+  }
+}
+
+export async function loginHandler(
+  login?: string,
+  password?: string,
+): Promise<IUserData | undefined> {
+  const response = await fetch(`${baseURL}/api/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ login, password }),
+  });
+  if (response.ok === true) {
+    const userData: IUserData = await response.json();
+    return userData;
+  }
+  const error = await response.json();
+  // eslint-disable-next-line no-console
+  console.log(error.message);
+  return undefined;
 }

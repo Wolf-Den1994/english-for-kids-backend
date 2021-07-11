@@ -57,12 +57,14 @@ function openSidebar(): void {
 }
 
 function closeSidebar(): void {
-  input().checked = false;
-  updateClassList(sidebar(), label(), ElemClasses.HIDDEN);
-  removeClassList(overlay(), ElemClasses.HIDDEN);
-  removeClassList(document.body, ElemClasses.HIDDEN);
-  overlay().removeEventListener('click', handlerSideBar);
-  menu().removeEventListener('click', handlerMenu);
+  if (store.getState().page !== NumberPage.LOGIN) {
+    input().checked = false;
+    updateClassList(sidebar(), label(), ElemClasses.HIDDEN);
+    removeClassList(overlay(), ElemClasses.HIDDEN);
+    removeClassList(document.body, ElemClasses.HIDDEN);
+    overlay().removeEventListener('click', handlerSideBar);
+    menu().removeEventListener('click', handlerMenu);
+  }
 }
 
 // label().addEventListener('click', handlerSideBar);

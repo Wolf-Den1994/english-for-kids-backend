@@ -1,6 +1,8 @@
+import { loginHandler } from '../api/api';
 import { onNavigate } from '../routing/routes';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
+import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
 import { getModal, header, overlay } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
@@ -21,13 +23,13 @@ const renderLoginModal = () => {
 
   const inputLogin = document.createElement(Tags.INPUT);
   inputLogin.type = 'text';
-  inputLogin.placeholder = 'Enter login (admin)';
+  inputLogin.placeholder = 'Enter login ("admin")';
   inputLogin.className = 'input-login';
   divInputs.append(inputLogin);
 
   const inputPassword = document.createElement(Tags.INPUT);
   inputPassword.type = 'password';
-  inputPassword.placeholder = 'Enter password (admin)';
+  inputPassword.placeholder = 'Enter password ("admin")';
   inputPassword.className = 'input-password';
   divInputs.append(inputPassword);
 
@@ -59,12 +61,13 @@ const closeLoginModal = () => {
   overlay().removeEventListener('click', closeLoginModal);
 };
 
-const checkUser = (login: string, password: string): void => {
-  // const superUser = 'admin'; // !!! !!! TODO change on admin !!! !!!
-  const superUser = ''; // !!! !!! TODO change on admin !!! !!!
-  if (login === superUser && password === superUser) {
-    onNavigate('/category');
-    // return false;
+const checkUser = async (login: string, password: string): Promise<void> => {
+  if (login && password) {
+    const userData = await loginHandler(login, password);
+    if (userData && userData.token) {
+      localStorage.setItem(LOCAL_STORAGE_USER_ADMIN, userData.token);
+      onNavigate('/category');
+    }
   }
 };
 
@@ -78,12 +81,19 @@ const selectionHandlerModal = (event: Event) => {
   }
 };
 
-export const openLoginModal = (): void => {
-  renderLoginModal();
-  addClassList(overlay(), ElemClasses.HIDDEN_MODAL);
-  addClassList(document.body, ElemClasses.HIDDEN_MODAL);
+export const openLoginModal = async (): Promise<void> => {
+  const admin = localStorage.getItem(LOCAL_STORAGE_USER_ADMIN);
 
-  const elems = getModal();
-  elems.modal.addEventListener('click', selectionHandlerModal);
-  overlay().addEventListener('click', closeLoginModal);
+  if (admin) {
+    onNavigate('/category');
+  } else {
+    renderLoginModal();
+    addClassList(overlay(), ElemClasses.HIDDEN_MODAL);
+    addClassList(document.body, ElemClasses.HIDDEN_MODAL);
+
+    const elems = getModal();
+
+    elems.modal.addEventListener('click', selectionHandlerModal);
+    overlay().addEventListener('click', closeLoginModal);
+  }
 };

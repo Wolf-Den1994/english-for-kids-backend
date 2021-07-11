@@ -38,3 +38,8 @@ export interface IFullCars {
   answers: number;
   percent: number;
 }
+
+export interface IUserData {
+  token: string;
+  userId: string;
+}
