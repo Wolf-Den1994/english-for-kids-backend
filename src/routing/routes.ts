@@ -9,7 +9,7 @@ interface IRoutes {
 
 const routes: IRoutes = {
   '/': changeHome(),
-  '/categoty': changeCategory,
+  '/category': changeCategory,
   '/words': changeWords,
 };
 
@@ -25,7 +25,7 @@ export const onNavigate = (pathname: string): void => {
     document.body.innerHTML = '';
     changeHome();
   }
-  if (pathname === '/categoty') {
+  if (pathname === '/category') {
     renderCategPage();
     workCategPage();
   }

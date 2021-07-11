@@ -6,3 +6,6 @@ export const linkCateg = (): HTMLAnchorElement =>
 
 export const linkWords = (): HTMLAnchorElement =>
   document.querySelector('.categ-link-words') as HTMLAnchorElement;
+
+export const inputText = (): HTMLInputElement =>
+  document.querySelector('.categ-top-layer-input') as HTMLInputElement;

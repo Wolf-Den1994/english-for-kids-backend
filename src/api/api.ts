@@ -1,4 +1,5 @@
-const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+// const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+const baseURL = 'http://localhost';
 
 export async function getCards(url: string): Promise<any> {
   // tickets.length = 0;
@@ -10,4 +11,21 @@ export async function getCards(url: string): Promise<any> {
   // если запрос прошел нормально
   const cards = await response.json();
   return cards;
+}
+
+interface IDataPut {
+  oldName: string;
+  newName: string;
+}
+
+export async function putCards(data: IDataPut) {
+  const response = await fetch(`${baseURL}/api/cards`, {
+    method: 'PUT',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (response.ok === true) {
+    const card = await response.text();
+    console.log(card);
+  }
 }

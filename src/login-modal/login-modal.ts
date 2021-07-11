@@ -60,9 +60,10 @@ const closeLoginModal = () => {
 };
 
 const checkUser = (login: string, password: string): void => {
-  const superUser = '1'; // !!! !!! TODO change on admin !!! !!!
+  // const superUser = 'admin'; // !!! !!! TODO change on admin !!! !!!
+  const superUser = ''; // !!! !!! TODO change on admin !!! !!!
   if (login === superUser && password === superUser) {
-    onNavigate('/categoty');
+    onNavigate('/category');
     // return false;
   }
 };
