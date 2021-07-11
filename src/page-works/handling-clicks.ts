@@ -1,18 +1,14 @@
-import { putCards } from '../api/api';
+import { deleteCards, putCards } from '../api/api';
 import { onNavigate } from '../routing/routes';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { CATEGORY } from '../utils/consts';
 import { Tags } from '../utils/enums';
 import { inputText } from '../utils/get-elems-categ';
 import { ICards } from '../utils/interfaces';
-import { removeClassList } from '../utils/remove-class';
 
-const renderTopLayer = (
-  card: HTMLDivElement,
-) => {
+const renderTopLayer = (card: HTMLDivElement) => {
   const divsCard = document.querySelectorAll('.categ-card');
   divsCard.forEach((div) => {
     const isTopLayer = div.lastElementChild as HTMLElement;
@@ -27,11 +23,11 @@ const renderTopLayer = (
   topLayer.className = 'categ-top-layer';
   card.append(topLayer);
 
-  const inputText = document.createElement(Tags.INPUT);
-  inputText.type = 'text';
-  inputText.placeholder = 'Category name';
-  inputText.className = 'categ-top-layer-input';
-  topLayer.append(inputText);
+  const input = document.createElement(Tags.INPUT);
+  input.type = 'text';
+  input.placeholder = 'Category name';
+  input.className = 'categ-top-layer-input';
+  topLayer.append(input);
 
   const divBtns = document.createElement(Tags.DIV);
   divBtns.className = 'categ-top-layer-btns';
@@ -50,11 +46,15 @@ const renderTopLayer = (
 
 const updateCategoryName = async (card: HTMLElement) => {
   if (inputText().value) {
-    console.log('1')
-    await putCards({oldName: card.id, newName: inputText().value})
-    onNavigate('/category')
+    await putCards({ oldName: card.id, newName: inputText().value });
+    onNavigate('/category');
   }
-}
+};
+
+const deleteCategoryByName = async (card: HTMLElement) => {
+  await deleteCards(card.id);
+  onNavigate('/category');
+};
 
 const handlerClickPageCategory = (
   cards: [string[], ...ICards[][]],
@@ -74,7 +74,9 @@ const handlerClickPageCategory = (
     const topLayer = card.lastElementChild as HTMLElement;
     topLayer.remove();
   } else if (checkClass(target, 'categ-top-layer-btn-create')) {
-    updateCategoryName(card)
+    updateCategoryName(card);
+  } else if (checkClass(target, 'categ-bnt-remove')) {
+    deleteCategoryByName(card);
   }
 };
 
