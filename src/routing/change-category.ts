@@ -1,5 +1,5 @@
 import { getCards } from '../api/api';
-import { handlingClicks } from '../page-works/handling-clicks';
+import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';

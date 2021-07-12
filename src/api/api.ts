@@ -20,7 +20,7 @@ interface IDataPut {
   newName: string;
 }
 
-export async function putCards(data: IDataPut): Promise<void> {
+export async function putCards(data: IDataPut): Promise<string | null> {
   const response = await fetch(`${baseURL}/api/cards`, {
     method: 'PUT',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -29,11 +29,13 @@ export async function putCards(data: IDataPut): Promise<void> {
   if (response.ok === true) {
     const card = await response.text();
     // eslint-disable-next-line no-console
-    console.log(card);
+    // console.log(card);
+    return card;
   }
+  return null;
 }
 
-export async function deleteCards(id: string): Promise<void> {
+export async function deleteCards(id: string): Promise<string | null> {
   const response = await fetch(`${baseURL}/api/cards/${id}`, {
     method: 'DELETE',
     headers: { Accept: 'application/json' },
@@ -41,11 +43,15 @@ export async function deleteCards(id: string): Promise<void> {
   if (response.ok === true) {
     const card = await response.text();
     // eslint-disable-next-line no-console
-    console.log(card);
+    // console.log(card);
+    return card;
   }
+  return null;
 }
 
-export async function createCards(newCategory: string): Promise<void> {
+export async function createCards(
+  newCategory: string,
+): Promise<string | null> {
   const response = await fetch(`${baseURL}/api/cards/`, {
     method: 'POST',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -54,8 +60,10 @@ export async function createCards(newCategory: string): Promise<void> {
   if (response.ok === true) {
     const card = await response.text();
     // eslint-disable-next-line no-console
-    console.log(card);
+    // console.log(card);
+    return card;
   }
+  return null;
 }
 
 export async function loginHandler(

@@ -45,7 +45,7 @@ const renderTopLayer = (card: HTMLDivElement, action: string) => {
     action === 'update'
       ? 'categ-top-layer-btn-update'
       : 'categ-top-layer-btn-create';
-  btnCreate.innerHTML = 'Create';
+  btnCreate.innerHTML = action === 'update' ? 'Update' : 'Create';
   divBtns.append(btnCreate);
 };
 

@@ -100,6 +100,7 @@
       top: 5px;
       right: 7px;
       transform: rotate(45deg);
+      transition: all 0.2s;
       cursor: pointer;
 
       &:before,
@@ -122,6 +123,10 @@
         height: 15%;
         margin-top: -9%;
         width: 100%;
+      }
+
+      &:hover {
+        transform: rotate(45deg) scale(1.2);
       }
     }
 

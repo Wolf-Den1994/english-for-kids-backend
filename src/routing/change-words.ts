@@ -1,4 +1,5 @@
 import { getCards } from '../api/api';
+import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
@@ -19,6 +20,7 @@ const pointThisWords = (
     if (typeof item === 'object') {
       const card = document.createElement(Tags.DIV);
       card.className = 'words-card';
+      card.id = `${item.word}`;
       wrapper.append(card);
 
       const word = document.createElement(Tags.P);
@@ -41,6 +43,7 @@ const pointThisWords = (
         <span class="words-bold">
           Sound file:
         </span> ${item.audioSrc}
+        <span class="words-play-sound"></span>
       `;
       card.append(soundFile);
 
@@ -130,4 +133,10 @@ export const renderWordsPage = async (): Promise<void> => {
   newWord.className = 'words-name words-name-new';
   newWord.innerHTML = `Add new word`;
   card.append(newWord);
+
+  const audio1 = document.createElement(Tags.AUDIO);
+  audio1.className = 'audio1';
+  card.append(audio1);
+
+  handlingClicksWordPage(main, cards);
 };
