@@ -29,7 +29,8 @@ export const render = (
   root().append(score);
 
   const general = document.createElement(Tags.DIV);
-  general.className = layout === LayoutPage.SUBJECT ? LayoutPage.SUBJECT : LayoutPage.DIFFICULT;
+  general.className =
+    layout === LayoutPage.SUBJECT ? LayoutPage.SUBJECT : LayoutPage.DIFFICULT;
   root().append(general);
 
   for (let i = 0; i < arrCards.length; i++) {

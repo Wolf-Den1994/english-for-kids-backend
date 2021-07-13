@@ -11,7 +11,7 @@ export const renderBtnSidebar = (): void => {
   const input = document.createElement(Tags.INPUT);
   input.id = RELATIONS;
   input.type = 'checkbox';
-  input.className = 'menu__toggle-input'
+  input.className = 'menu__toggle-input';
   btnSidebar.append(input);
 
   const label = document.createElement(Tags.LABEL);

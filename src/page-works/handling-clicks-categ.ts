@@ -100,5 +100,8 @@ export const handlingClicks = (
   main: HTMLElement,
   cards: [string[], ...ICards[][]],
 ): void => {
-  main.addEventListener(Events.CLICK, handlerClickPageCategory.bind(null, cards));
+  main.addEventListener(
+    Events.CLICK,
+    handlerClickPageCategory.bind(null, cards),
+  );
 };

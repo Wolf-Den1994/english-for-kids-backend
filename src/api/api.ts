@@ -49,9 +49,7 @@ export async function deleteCards(id: string): Promise<string | null> {
   return null;
 }
 
-export async function createCards(
-  newCategory: string,
-): Promise<string | null> {
+export async function createCards(newCategory: string): Promise<string | null> {
   const response = await fetch(`${baseURL}/api/cards/`, {
     method: 'POST',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },

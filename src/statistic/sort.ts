@@ -39,8 +39,18 @@ export const sortStatistic = (title: HTMLTableHeaderCellElement): void => {
   switch (true) {
     case checkClass(title, getTitle(SortTitle.CATEGORY)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, SortTitle.CATEGORY, Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, SortTitle.CATEGORY, Order.ASC, Order.DESC);
+        ? directionSorting(
+          newFullCards,
+          SortTitle.CATEGORY,
+          Order.DESC,
+          Order.ASC,
+        )
+        : directionSorting(
+          newFullCards,
+          SortTitle.CATEGORY,
+          Order.ASC,
+          Order.DESC,
+        );
       break;
 
     case checkClass(title, getTitle(SortTitle.WORD)):
@@ -52,32 +62,77 @@ export const sortStatistic = (title: HTMLTableHeaderCellElement): void => {
 
     case checkClass(title, getTitle(SortTitle.TRANSLATE)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, SortTitle.TRANSLATION, Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, SortTitle.TRANSLATION, Order.ASC, Order.DESC);
+        ? directionSorting(
+          newFullCards,
+          SortTitle.TRANSLATION,
+          Order.DESC,
+          Order.ASC,
+        )
+        : directionSorting(
+          newFullCards,
+          SortTitle.TRANSLATION,
+          Order.ASC,
+          Order.DESC,
+        );
       break;
 
     case checkClass(title, getTitle(SortTitle.TRAIN)):
       checkClass(title, Order.DESC)
         ? directionSorting(newFullCards, SortTitle.TRAIN, Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, SortTitle.TRAIN, Order.ASC, Order.DESC);
+        : directionSorting(
+          newFullCards,
+          SortTitle.TRAIN,
+          Order.ASC,
+          Order.DESC,
+        );
       break;
 
     case checkClass(title, getTitle(SortTitle.PLAY)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, SortTitle.ANSWERS, Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, SortTitle.ANSWERS, Order.ASC, Order.DESC);
+        ? directionSorting(
+          newFullCards,
+          SortTitle.ANSWERS,
+          Order.DESC,
+          Order.ASC,
+        )
+        : directionSorting(
+          newFullCards,
+          SortTitle.ANSWERS,
+          Order.ASC,
+          Order.DESC,
+        );
       break;
 
     case checkClass(title, getTitle(SortTitle.ERRORS)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, SortTitle.ERRORS, Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, SortTitle.ERRORS, Order.ASC, Order.DESC);
+        ? directionSorting(
+          newFullCards,
+          SortTitle.ERRORS,
+          Order.DESC,
+          Order.ASC,
+        )
+        : directionSorting(
+          newFullCards,
+          SortTitle.ERRORS,
+          Order.ASC,
+          Order.DESC,
+        );
       break;
 
     case checkClass(title, getTitle(SortTitle.PERCENT)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, SortTitle.PERCENT, Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, SortTitle.PERCENT, Order.ASC, Order.DESC);
+        ? directionSorting(
+          newFullCards,
+          SortTitle.PERCENT,
+          Order.DESC,
+          Order.ASC,
+        )
+        : directionSorting(
+          newFullCards,
+          SortTitle.PERCENT,
+          Order.ASC,
+          Order.DESC,
+        );
       break;
 
     default:

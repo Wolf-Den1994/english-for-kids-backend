@@ -16,22 +16,22 @@ const isPageCategory = (): boolean =>
   store.getState().page !== NumberPage.STATISTIC &&
   store.getState().page !== NumberPage.DIFFICULT;
 
-  const classIteration = (
-    fn: (
-      elemToAddClass: HTMLButtonElement | HTMLElement | Element,
-      elemClass: string,
-    ) => void,
-    elems: IHTMLElems,
-    arr: IFullCards[] | ICards[],
-    classChanger?: (i: number) => void,
-  ) => {
-    for (let i = 0; i < arr.length; i++) {
-      fn(elems.arrSvgs[i], ElemClasses.PLAY);
-      fn(elems.arrParags[i], ElemClasses.PLAY);
-      fn(elems.arrImages[i], ElemClasses.PLAY);
-      classChanger && classChanger(i);
-    }
-  };
+const classIteration = (
+  fn: (
+    elemToAddClass: HTMLButtonElement | HTMLElement | Element,
+    elemClass: string,
+  ) => void,
+  elems: IHTMLElems,
+  arr: IFullCards[] | ICards[],
+  classChanger?: (i: number) => void,
+) => {
+  for (let i = 0; i < arr.length; i++) {
+    fn(elems.arrSvgs[i], ElemClasses.PLAY);
+    fn(elems.arrParags[i], ElemClasses.PLAY);
+    fn(elems.arrImages[i], ElemClasses.PLAY);
+    classChanger && classChanger(i);
+  }
+};
 
 const changeStateOnTrain = (
   arr: IFullCards[] | ICards[],
