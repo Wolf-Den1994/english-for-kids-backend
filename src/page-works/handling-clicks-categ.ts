@@ -4,7 +4,7 @@ import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { Tags } from '../utils/enums';
+import { Events, Tags } from '../utils/enums';
 import { inputText } from '../utils/get-elems-categ';
 import { ICards } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
@@ -100,5 +100,5 @@ export const handlingClicks = (
   main: HTMLElement,
   cards: [string[], ...ICards[][]],
 ): void => {
-  main.addEventListener('click', handlerClickPageCategory.bind(null, cards));
+  main.addEventListener(Events.CLICK, handlerClickPageCategory.bind(null, cards));
 };

@@ -1,7 +1,7 @@
 import { sound } from '../play/sound';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { IndexSounds, Tags } from '../utils/enums';
+import { Events, IndexSounds, Tags } from '../utils/enums';
 import { ICards } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
@@ -118,5 +118,5 @@ export const handlingClicksWordPage = (
   main: HTMLElement,
   cards: [string[], ...ICards[][]],
 ): void => {
-  main.addEventListener('click', handlerClickPageWord.bind(null, cards));
+  main.addEventListener(Events.CLICK, handlerClickPageWord.bind(null, cards));
 };

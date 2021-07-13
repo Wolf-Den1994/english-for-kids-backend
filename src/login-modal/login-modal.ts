@@ -3,7 +3,7 @@ import { onNavigate } from '../routing/routes';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
-import { ElemClasses, Tags } from '../utils/enums';
+import { ElemClasses, Events, Tags } from '../utils/enums';
 import { getModal, header, overlay } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
@@ -57,8 +57,8 @@ const closeLoginModal = () => {
   const elems = getModal();
   header().children[2].remove();
   removeClassHiddenModal();
-  elems.modal.removeEventListener('click', selectionHandlerModal);
-  overlay().removeEventListener('click', closeLoginModal);
+  elems.modal.removeEventListener(Events.CLICK, selectionHandlerModal);
+  overlay().removeEventListener(Events.CLICK, closeLoginModal);
 };
 
 const checkUser = async (login: string, password: string): Promise<void> => {
@@ -93,7 +93,7 @@ export const openLoginModal = async (): Promise<void> => {
 
     const elems = getModal();
 
-    elems.modal.addEventListener('click', selectionHandlerModal);
-    overlay().addEventListener('click', closeLoginModal);
+    elems.modal.addEventListener(Events.CLICK, selectionHandlerModal);
+    overlay().addEventListener(Events.CLICK, closeLoginModal);
   }
 };

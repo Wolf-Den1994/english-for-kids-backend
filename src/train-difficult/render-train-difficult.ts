@@ -5,10 +5,10 @@ import { store } from '../store/store';
 import { cleanField, render } from '../subject/render';
 import { NumberPage, Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { IFullCars } from '../utils/interfaces';
+import { IFullCards } from '../utils/interfaces';
 
-export const copyFullCards: IFullCars[] = [];
-export const arrDifficultWord: IFullCars[] = [];
+export const copyFullCards: IFullCards[] = [];
+export const arrDifficultWord: IFullCards[] = [];
 const NUMBER_CARDS_DISPLAYED = 8;
 
 export const renderTrainDifficult = (): void => {

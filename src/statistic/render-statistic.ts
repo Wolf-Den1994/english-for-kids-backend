@@ -1,7 +1,7 @@
 import { objApp } from '../control/objs';
 import { Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { IFullCars } from '../utils/interfaces';
+import { IFullCards } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { btnDifficultWord, btnReset } from './button';
 import { mainStatistic } from './main';
@@ -17,7 +17,7 @@ const cleareField = () => {
   objApp.countStatistic = 1;
 };
 
-export const renderStatistic = (data: IFullCars[], order: TypeOrder): void => {
+export const renderStatistic = (data: IFullCards[], order: TypeOrder): void => {
   cleareField();
 
   root().append(mainStatistic);
@@ -32,7 +32,6 @@ export const renderStatistic = (data: IFullCars[], order: TypeOrder): void => {
     const row = document.createElement(Tags.TR);
     row.className = 'row';
     row.innerHTML += `
-      <td class="cell">${i + 1}</td>
       <td class="cell cell-word">${data[i].category}</td>
       <td class="cell cell-word">${data[i].word}</td>
       <td class="cell cell-word">${data[i].translation}</td>

@@ -11,7 +11,7 @@ import { renderOverlay } from '../overlay/overlay';
 import { renderRoot } from '../root/root';
 import { handlerMenu, handlerSideBar } from '../sidebar/handler';
 import { renderSidebar } from '../sidebar/sidebar';
-import { ElemClasses } from '../utils/enums';
+import { ElemClasses, Events } from '../utils/enums';
 import { inputSwitcher, label, menu, root } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
@@ -26,9 +26,9 @@ export const renderMain = (): void => {
   renderFooter();
   getFullCardsNow();
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
-  label().addEventListener('click', handlerSideBar);
-  menu().addEventListener('click', handlerMenu);
-  inputSwitcher().addEventListener('change', switchState);
-  root().addEventListener('click', selectionHandler);
+  label().addEventListener(Events.CLICK, handlerSideBar);
+  menu().addEventListener(Events.CLICK, handlerMenu);
+  inputSwitcher().addEventListener(Events.CHANGE, switchState);
+  root().addEventListener(Events.CLICK, selectionHandler);
   removeFinal();
 };

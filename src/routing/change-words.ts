@@ -4,7 +4,7 @@ import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
-import { ElemClasses, Tags } from '../utils/enums';
+import { ElemClasses, Events, Tags } from '../utils/enums';
 import { selectTitle } from '../utils/get-elems-words';
 import { ICards } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
@@ -116,7 +116,7 @@ export const renderWordsPage = async (): Promise<void> => {
   main.append(wrapperCards);
 
   selectTitle().addEventListener(
-    'change',
+    Events.CHANGE,
     selectCategory.bind(null, cards, wrapperCards),
   );
 

@@ -1,15 +1,15 @@
 import { fullCards } from '../control/obj-statistic';
 import { checkClass } from '../utils/check-class';
-import { Order } from '../utils/enums';
-import { IFullCars } from '../utils/interfaces';
+import { Order, SortTitle } from '../utils/enums';
+import { IFullCards } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { renderStatistic } from './render-statistic';
 
-export const sortCards: IFullCars[] = [];
+export const sortCards: IFullCards[] = [];
 
 const sortByTitle = (
-  arr: IFullCars[],
-  arg: keyof IFullCars,
+  arr: IFullCards[],
+  arg: keyof IFullCards,
   order: TypeOrder,
 ): void => {
   if (order === Order.ASC) {
@@ -20,8 +20,8 @@ const sortByTitle = (
 };
 
 const directionSorting = (
-  cards: IFullCars[],
-  column: keyof IFullCars,
+  cards: IFullCards[],
+  column: keyof IFullCards,
   sortAside: TypeOrder,
   renderAside: TypeOrder,
 ): void => {
@@ -30,58 +30,54 @@ const directionSorting = (
   renderStatistic(sortCards, renderAside);
 };
 
+const getTitle = (prefix: string) => `title-${prefix}`;
+
 export const sortStatistic = (title: HTMLTableHeaderCellElement): void => {
   sortCards.length = 0;
   const newFullCards = fullCards.slice();
 
   switch (true) {
-    case checkClass(title, 'title-number'):
+    case checkClass(title, getTitle(SortTitle.CATEGORY)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'number', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'number', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.CATEGORY, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.CATEGORY, Order.ASC, Order.DESC);
       break;
 
-    case checkClass(title, 'title-category'):
+    case checkClass(title, getTitle(SortTitle.WORD)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'category', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'category', Order.ASC, Order.DESC);
-      break;
-
-    case checkClass(title, 'title-word'):
-      checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'word', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'word', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.WORD, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.WORD, Order.ASC, Order.DESC);
 
       break;
 
-    case checkClass(title, 'title-translate'):
+    case checkClass(title, getTitle(SortTitle.TRANSLATE)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'translation', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'translation', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.TRANSLATION, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.TRANSLATION, Order.ASC, Order.DESC);
       break;
 
-    case checkClass(title, 'title-train'):
+    case checkClass(title, getTitle(SortTitle.TRAIN)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'train', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'train', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.TRAIN, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.TRAIN, Order.ASC, Order.DESC);
       break;
 
-    case checkClass(title, 'title-play'):
+    case checkClass(title, getTitle(SortTitle.PLAY)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'answers', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'answers', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.ANSWERS, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.ANSWERS, Order.ASC, Order.DESC);
       break;
 
-    case checkClass(title, 'title-errors'):
+    case checkClass(title, getTitle(SortTitle.ERRORS)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'errors', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'errors', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.ERRORS, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.ERRORS, Order.ASC, Order.DESC);
       break;
 
-    case checkClass(title, 'title-percent'):
+    case checkClass(title, getTitle(SortTitle.PERCENT)):
       checkClass(title, Order.DESC)
-        ? directionSorting(newFullCards, 'percent', Order.DESC, Order.ASC)
-        : directionSorting(newFullCards, 'percent', Order.ASC, Order.DESC);
+        ? directionSorting(newFullCards, SortTitle.PERCENT, Order.DESC, Order.ASC)
+        : directionSorting(newFullCards, SortTitle.PERCENT, Order.ASC, Order.DESC);
       break;
 
     default:

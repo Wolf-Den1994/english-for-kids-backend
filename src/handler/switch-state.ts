@@ -8,22 +8,33 @@ import { addClassList } from '../utils/add-class';
 import { changeClassList } from '../utils/change-class';
 import { ElemClasses, NumberPage, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
-import { ICards, IFullCars, IHTMLElems } from '../utils/interfaces';
+import { ICards, IFullCards, IHTMLElems } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
-const isPageCategory = (): boolean => {
-  if (
-    store.getState().page !== NumberPage.MAIN &&
-    store.getState().page !== NumberPage.STATISTIC &&
-    store.getState().page !== NumberPage.DIFFICULT
-  ) {
-    return true;
-  }
-  return false;
-};
+const isPageCategory = (): boolean =>
+  store.getState().page !== NumberPage.MAIN &&
+  store.getState().page !== NumberPage.STATISTIC &&
+  store.getState().page !== NumberPage.DIFFICULT;
+
+  const classIteration = (
+    fn: (
+      elemToAddClass: HTMLButtonElement | HTMLElement | Element,
+      elemClass: string,
+    ) => void,
+    elems: IHTMLElems,
+    arr: IFullCards[] | ICards[],
+    classChanger?: (i: number) => void,
+  ) => {
+    for (let i = 0; i < arr.length; i++) {
+      fn(elems.arrSvgs[i], ElemClasses.PLAY);
+      fn(elems.arrParags[i], ElemClasses.PLAY);
+      fn(elems.arrImages[i], ElemClasses.PLAY);
+      classChanger && classChanger(i);
+    }
+  };
 
 const changeStateOnTrain = (
-  arr: IFullCars[] | ICards[],
+  arr: IFullCards[] | ICards[],
   elems: IHTMLElems,
 ): void => {
   store.dispatch(changeMode(StateApp.TRAIN));
@@ -35,25 +46,18 @@ const changeStateOnTrain = (
     ElemClasses.REPEAT,
     ElemClasses.BTN_START_GAME,
   );
-  for (let i = 0; i < arr.length; i++) {
-    removeClassList(elems.arrSvgs[i], ElemClasses.PLAY);
-    removeClassList(elems.arrParags[i], ElemClasses.PLAY);
-    removeClassList(elems.arrImages[i], ElemClasses.PLAY);
-    removeClassList(elems.arrImages[i], ElemClasses.GREAT);
-  }
+  classIteration(removeClassList, elems, arr, (i: number) =>
+    removeClassList(elems.arrImages[i], ElemClasses.GREAT),
+  );
 };
 
 const changeStateOnPlay = (
-  arr: IFullCars[] | ICards[],
+  arr: IFullCards[] | ICards[],
   elems: IHTMLElems,
 ): void => {
   store.dispatch(changeMode(StateApp.PLAY));
   removeClassList(elems.btnStartGame, ElemClasses.PLAY);
-  for (let i = 0; i < arr.length; i++) {
-    addClassList(elems.arrSvgs[i], ElemClasses.PLAY);
-    addClassList(elems.arrParags[i], ElemClasses.PLAY);
-    addClassList(elems.arrImages[i], ElemClasses.PLAY);
-  }
+  classIteration(addClassList, elems, arr);
 };
 
 export const switchState = (event: Event): void => {

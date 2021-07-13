@@ -1,4 +1,7 @@
-import { Tags } from '../utils/enums';
+import { Links, Tags } from '../utils/enums';
+
+const BLANK = '_blank';
+const ATTITUDE = 'noopener noreferrer';
 
 export const renderFooter = (): void => {
   const footer = document.createElement(Tags.FOOTER);
@@ -7,17 +10,17 @@ export const renderFooter = (): void => {
 
   const linkGitHub = document.createElement(Tags.LINK);
   linkGitHub.className = 'github';
-  linkGitHub.href = 'https://github.com/Wolf-Den1994';
-  linkGitHub.target = '_blank';
-  linkGitHub.rel = 'noopener noreferrer';
+  linkGitHub.href = Links.GITHUB;
+  linkGitHub.target = BLANK;
+  linkGitHub.rel = ATTITUDE;
   linkGitHub.innerHTML = 'Wolf-Den1994';
   footer.append(linkGitHub);
 
   const linkRSS = document.createElement(Tags.LINK);
   linkRSS.className = 'rss';
-  linkRSS.href = 'https://rs.school/js/';
-  linkRSS.target = '_blank';
-  linkRSS.rel = 'noopener noreferrer';
+  linkRSS.href = Links.RSSCHOOL;
+  linkRSS.target = BLANK;
+  linkRSS.rel = ATTITUDE;
   footer.append(linkRSS);
 
   const year = document.createElement(Tags.SPAN);

@@ -78,3 +78,31 @@ export enum NumberPage {
   DIFFICULT = 10,
   LOGIN = 11,
 }
+
+export enum Events {
+  MOUSELEAVE = 'mouseleave',
+  CLICK = 'click',
+  CHANGE = 'change',
+}
+
+export enum Links {
+  RSSCHOOL = 'https://rs.school/js/',
+  GITHUB = 'https://github.com/Wolf-Den1994',
+}
+
+export enum SortTitle {
+  CATEGORY = 'category',
+  WORD = 'word',
+  TRANSLATE = 'translate',
+  TRANSLATION = 'translation',
+  TRAIN = 'train',
+  PLAY = 'play',
+  ANSWERS = 'answers',
+  ERRORS = 'errors',
+  PERCENT = 'percent',
+}
+
+export enum LayoutPage {
+  SUBJECT = 'subject',
+  DIFFICULT = 'diff',
+}

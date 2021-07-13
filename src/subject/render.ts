@@ -2,9 +2,9 @@ import cards from '../cards';
 import { objGame } from '../control/obj-game';
 import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
-import { StateApp, Tags } from '../utils/enums';
+import { LayoutPage, StateApp, Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { ICards, IFullCars } from '../utils/interfaces';
+import { ICards, IFullCards } from '../utils/interfaces';
 
 export const cleanField = (): void => {
   objGame.counterErrors = 0;
@@ -14,12 +14,12 @@ export const cleanField = (): void => {
 export const render = (
   layout: string,
   pageNumber: number,
-  arrCards: ICards[] | IFullCars[],
+  arrCards: ICards[] | IFullCards[],
 ): void => {
   const title = document.createElement(Tags.TITLE2);
   title.className = 'title';
   title.innerHTML =
-    layout === 'subject'
+    layout === LayoutPage.SUBJECT
       ? cards[CATEGORY][pageNumber]
       : 'Train difficult words';
   root().append(title);
@@ -29,7 +29,7 @@ export const render = (
   root().append(score);
 
   const general = document.createElement(Tags.DIV);
-  general.className = layout === 'subject' ? 'subject' : 'diff';
+  general.className = layout === LayoutPage.SUBJECT ? LayoutPage.SUBJECT : LayoutPage.DIFFICULT;
   root().append(general);
 
   for (let i = 0; i < arrCards.length; i++) {
@@ -46,7 +46,7 @@ export const render = (
     flipper.append(front);
 
     const img = document.createElement(Tags.IMG);
-    const objCard = arrCards[i] as IFullCars;
+    const objCard = arrCards[i] as IFullCards;
     img.src = `${arrCards[i].image}`;
     img.alt = `${arrCards[i].word}`;
     front.append(img);
@@ -105,5 +105,5 @@ export const renderSubject = (page: number): void => {
   const index = page - 1;
   cleanField();
 
-  render('subject', index, cards[index + 1] as ICards[]);
+  render(LayoutPage.SUBJECT, index, cards[index + 1] as ICards[]);
 };

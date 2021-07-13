@@ -16,10 +16,16 @@ import {
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { imgCategories } from '../utils/consts';
-import { ElemClasses, IndexSounds, NumberPage, StateApp } from '../utils/enums';
+import {
+  ElemClasses,
+  Events,
+  IndexSounds,
+  NumberPage,
+  StateApp,
+} from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import { getWord } from '../utils/get-word';
-import { ICards, IFullCars } from '../utils/interfaces';
+import { ICards, IFullCards, IHTMLElems } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 import { changeActiveLink } from './links-active';
 
@@ -28,23 +34,17 @@ const checkClasses = (
   elem: HTMLElement,
   card: HTMLDivElement,
   parentClass: string,
-): boolean => {
-  if (
-    checkClass(parent, parentClass) &&
-    !checkClass(elem, ElemClasses.SVG) &&
-    !checkClass(card, ElemClasses.HOVER)
-  ) {
-    return true;
-  }
-  return false;
-};
+): boolean =>
+  checkClass(parent, parentClass) &&
+  !checkClass(elem, ElemClasses.SVG) &&
+  !checkClass(card, ElemClasses.HOVER);
 
 const addListener = (card: HTMLDivElement): void => {
   const flipBack = function flipBackCard() {
     removeClassList(card, ElemClasses.HOVER);
-    card.removeEventListener('mouseleave', flipBack);
+    card.removeEventListener(Events.MOUSELEAVE, flipBack);
   };
-  card.addEventListener('mouseleave', flipBack);
+  card.addEventListener(Events.MOUSELEAVE, flipBack);
 };
 
 const categotySelection = (card: HTMLDivElement): void => {
@@ -98,9 +98,14 @@ const workWithStatistic = (
 
 const workWithDiffTrain = (front: HTMLDivElement): void => {
   const word: string = getWord(front);
-  const obj = copyFullCards.find((item) => item.word === word) as IFullCars;
+  const obj = copyFullCards.find((item) => item.word === word) as IFullCards;
   sound(obj.audioSrc, IndexSounds.FIRST);
 };
+
+const isGameProcess = (elems: IHTMLElems, elem: HTMLElement): boolean =>
+  checkClass(elem, ElemClasses.IMG) &&
+  !checkClass(elems.btnStartGame, ElemClasses.BTN_START_GAME) &&
+  !checkClass(elem, ElemClasses.GREAT);
 
 export const selectionHandler = (event: Event): void => {
   const elems = getArrsElem();
@@ -128,11 +133,7 @@ export const selectionHandler = (event: Event): void => {
     if (objGame.arrAudios.length > 0) {
       sound(objGame.arrAudios[0], IndexSounds.FIRST);
     }
-  } else if (
-    checkClass(elem, ElemClasses.IMG) &&
-    !checkClass(elems.btnStartGame, ElemClasses.BTN_START_GAME) &&
-    !checkClass(elem, ElemClasses.GREAT)
-  ) {
+  } else if (isGameProcess(elems, elem)) {
     gameProcess(elem);
   }
 };

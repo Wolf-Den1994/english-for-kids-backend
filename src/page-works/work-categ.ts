@@ -1,5 +1,6 @@
 import { onNavigate } from '../routing/routes';
 import { addClassList } from '../utils/add-class';
+import { Events } from '../utils/enums';
 import { linkCateg, linkOut, linkWords } from '../utils/get-elems-categ';
 import { removeClassList } from '../utils/remove-class';
 
@@ -19,9 +20,9 @@ export const rederectOnWordsPage = (): void => {
 };
 
 const addListeners = () => {
-  linkOut().addEventListener('click', rederectOnHome);
-  linkCateg().addEventListener('click', rederectOnCategPage);
-  linkWords().addEventListener('click', rederectOnWordsPage);
+  linkOut().addEventListener(Events.CLICK, rederectOnHome);
+  linkCateg().addEventListener(Events.CLICK, rederectOnCategPage);
+  linkWords().addEventListener(Events.CLICK, rederectOnWordsPage);
 };
 
 export const workCategPage = (): void => {

@@ -1,10 +1,10 @@
 import { fullCards } from '../control/obj-statistic';
 import { NAME_LOCALSTORAGE } from '../utils/consts';
 import { Order } from '../utils/enums';
-import { IFullCars } from '../utils/interfaces';
+import { IFullCards } from '../utils/interfaces';
 import { renderStatistic } from './render-statistic';
 
-const cleanArr = (arr: IFullCars[]): void => {
+const cleanArr = (arr: IFullCards[]): void => {
   arr.forEach((item) => {
     item.train = 0;
     item.play = 0;

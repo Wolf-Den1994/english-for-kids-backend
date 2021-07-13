@@ -9,7 +9,7 @@ import { renderSubject } from '../subject/render';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { CATEGORY } from '../utils/consts';
-import { ElemClasses, NumberPage, Order } from '../utils/enums';
+import { ElemClasses, Events, NumberPage, Order } from '../utils/enums';
 import { removeClassList } from '../utils/remove-class';
 import { updateClassList } from '../utils/update-class';
 import { list } from './sidebar';
@@ -52,8 +52,8 @@ function openSidebar(): void {
   updateClassList(label(), sidebar(), ElemClasses.HIDDEN);
   addClassList(overlay(), ElemClasses.HIDDEN);
   addClassList(document.body, ElemClasses.HIDDEN);
-  overlay().addEventListener('click', handlerSideBar);
-  menu().addEventListener('click', handlerMenu);
+  overlay().addEventListener(Events.CLICK, handlerSideBar);
+  menu().addEventListener(Events.CLICK, handlerMenu);
 }
 
 function closeSidebar(): void {
@@ -62,10 +62,10 @@ function closeSidebar(): void {
     input().checked = false;
     updateClassList(sidebar(), label(), ElemClasses.HIDDEN);
     removeClassList(overlay(), ElemClasses.HIDDEN);
-    overlay().removeEventListener('click', handlerSideBar);
-    menu().removeEventListener('click', handlerMenu);
+    overlay().removeEventListener(Events.CLICK, handlerSideBar);
+    menu().removeEventListener(Events.CLICK, handlerMenu);
   }
 }
 
-// label().addEventListener('click', handlerSideBar);
-// menu().addEventListener('click', handlerMenu);
+// label().addEventListener(Events.CLICK, handlerSideBar);
+// menu().addEventListener(Events.CLICK, handlerMenu);

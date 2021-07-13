@@ -11,7 +11,7 @@
   }
 
   .btn-sidebar {
-    #menu__toggle {
+    .menu__toggle-input {
       opacity: 0;
 
       &:checked ~ .menu__btn > span {

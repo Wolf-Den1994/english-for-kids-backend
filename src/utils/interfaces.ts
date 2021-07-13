@@ -25,7 +25,7 @@ export interface IGameField {
   counterErrors: number;
 }
 
-export interface IFullCars {
+export interface IFullCards {
   number: number;
   category: string;
   word: string;

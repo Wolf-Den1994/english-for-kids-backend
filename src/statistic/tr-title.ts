@@ -4,9 +4,8 @@ import { TypeOrder } from '../utils/types';
 export const trTitle = document.createElement(Tags.TR);
 trTitle.className = 'title-row';
 
-const NUMBER_COLUMN = 8;
+const NUMBER_COLUMN = 7;
 const arrClassListsTH = [
-  'title-number',
   'title-category',
   'title-word',
   'title-translate',
@@ -16,7 +15,6 @@ const arrClassListsTH = [
   'title-percent',
 ];
 const arrContentTH = [
-  '№',
   'Category',
   'Word',
   'Translation',
