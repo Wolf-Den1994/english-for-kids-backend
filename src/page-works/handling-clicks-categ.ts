@@ -1,11 +1,17 @@
-import { createCards, deleteCards, putCards } from '../api/api';
+import {
+  createCards,
+  createCategory,
+  deleteCards,
+  putCards,
+  putCategoryByName,
+} from '../api/api';
 import { onNavigate } from '../routing/routes';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { Events, Tags } from '../utils/enums';
-import { inputText } from '../utils/get-elems-categ';
+import { inputFile, inputText } from '../utils/get-elems-categ';
 import { ICards } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
@@ -30,6 +36,20 @@ const renderTopLayer = (card: HTMLDivElement, action: string) => {
   input.placeholder = 'Category name';
   input.className = 'categ-top-layer-input';
   topLayer.append(input);
+
+  const divInputImage = document.createElement(Tags.DIV);
+  divInputImage.className = 'categ-top-layer-image-wrapper-input';
+  topLayer.append(divInputImage);
+
+  const inputImage = document.createElement(Tags.INPUT);
+  inputImage.className = 'categ-top-layer-image-input';
+  inputImage.type = 'file';
+  divInputImage.append(inputImage);
+
+  const btnImage = document.createElement(Tags.SPAN);
+  btnImage.innerHTML = 'Select file';
+  btnImage.className = 'categ-top-layer-image-btn';
+  divInputImage.append(btnImage);
 
   const divBtns = document.createElement(Tags.DIV);
   divBtns.className = 'categ-top-layer-btns';
@@ -61,10 +81,32 @@ const deleteCategoryByName = async (card: HTMLElement) => {
   onNavigate('/category');
 };
 
-const createCategory = async () => {
-  if (inputText().value) {
-    await createCards(inputText().value);
-    onNavigate('/category');
+const createCategori = async () => {
+  // if (inputFile() && inputText()) {
+  //   const formData = new FormData();
+
+  //   const image = inputFile()
+  //   const src = image.files as FileList
+  //   const imageSrc = src[0]
+
+  //   console.log(imageSrc)
+
+  //   formData.set('name', inputText().value)
+  //   formData.set('image', imageSrc)
+  // createCategory(formData)
+  // }
+  if (inputFile() && inputText()) {
+    const formData = new FormData();
+
+    const image = inputFile();
+    const src = image.files as FileList;
+    const imageSrc = src[0];
+
+    console.log(imageSrc);
+
+    formData.set('name', inputText().value);
+    formData.set('image', imageSrc);
+    putCategoryByName(formData, 'zxc');
   }
 };
 
@@ -92,7 +134,7 @@ const handlerClickPageCategory = (
   } else if (checkClass(target, 'categ-card-new')) {
     renderTopLayer(card, 'create');
   } else if (checkClass(target, 'categ-top-layer-btn-create')) {
-    createCategory();
+    createCategori();
   }
 };
 

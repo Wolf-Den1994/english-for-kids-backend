@@ -1,4 +1,4 @@
-import { IUserData } from '../utils/interfaces';
+import { ICategoriesMongo, IUserData } from '../utils/interfaces';
 
 // const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 const baseURL = 'http://localhost';
@@ -57,6 +57,68 @@ export async function createCards(newCategory: string): Promise<string | null> {
   });
   if (response.ok === true) {
     const card = await response.text();
+    // eslint-disable-next-line no-console
+    // console.log(card);
+    return card;
+  }
+  return null;
+}
+
+export async function getCategory() {
+  const response = await fetch(`${baseURL}/api/category`, {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+  });
+  // если запрос прошел нормально
+  const category: ICategoriesMongo[] = await response.json();
+  console.log(category);
+  return category;
+}
+
+export async function getCategoryByName(name: string) {
+  const response = await fetch(`${baseURL}/api/category/${name}`, {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+  });
+  // если запрос прошел нормально
+  const category = await response.json();
+  console.log(category);
+  return category;
+}
+
+export async function createCategory(formData: FormData) {
+  const response = await fetch(`${baseURL}/api/category/`, {
+    method: 'POST',
+    body: formData,
+  });
+  const category = await response.json();
+  return category;
+}
+
+export async function putCategoryByName(
+  formData: FormData,
+  name: string,
+): Promise<string | null> {
+  const response = await fetch(`${baseURL}/api/category/${name}`, {
+    method: 'PUT',
+    body: formData,
+  });
+  if (response.ok === true) {
+    const card = await response.json();
+    // eslint-disable-next-line no-console
+    // console.log(card);
+    return card;
+  }
+  return null;
+}
+
+export async function deleteCategory(name: string) {
+  const response = await fetch(`${baseURL}/api/category/${name}`, {
+    method: 'DELETE',
+    headers: { Accept: 'application/json' },
+  });
+  if (response.ok === true) {
+    const card = await response.json();
     // eslint-disable-next-line no-console
     // console.log(card);
     return card;

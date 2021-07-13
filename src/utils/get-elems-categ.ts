@@ -9,3 +9,6 @@ export const linkWords = (): HTMLAnchorElement =>
 
 export const inputText = (): HTMLInputElement =>
   document.querySelector('.categ-top-layer-input') as HTMLInputElement;
+
+export const inputFile = () =>
+  document.querySelector('.categ-top-layer-image-input') as HTMLInputElement;

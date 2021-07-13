@@ -43,3 +43,9 @@ export interface IUserData {
   token: string;
   userId: string;
 }
+
+export interface ICategoriesMongo {
+  categoryName: string;
+  image: string;
+  _id: string;
+}

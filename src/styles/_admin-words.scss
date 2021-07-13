@@ -214,7 +214,9 @@
 
             .word-top-layer-sound-input,
             .word-top-layer-image-input {
-              width: 400px;
+              width: 91px;
+              position: absolute;
+              z-index: 3;
               height: 25px;
               opacity: 0;
             }
@@ -238,6 +240,15 @@
               border-radius: 6px;
 
               &:hover {
+                background-color: $color-backgr-modal-additional;
+                color: $color-final-text;
+              }
+            }
+
+            &:hover {
+              .word-top-layer-sound-btn,
+              .word-top-layer-image-btn {
+                cursor: pointer;
                 background-color: $color-backgr-modal-additional;
                 color: $color-final-text;
               }

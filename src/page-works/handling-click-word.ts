@@ -1,11 +1,18 @@
 import { sound } from '../play/sound';
+import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
+import { CATEGORY } from '../utils/consts';
 import { Events, IndexSounds, Tags } from '../utils/enums';
+import { getInputTranslation, getInputWord } from '../utils/get-elems-words';
 import { ICards } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
-const renderTopLayer = (card: HTMLElement, action: string) => {
+const renderTopLayer = (
+  card: HTMLElement,
+  action: string,
+  cards: [string[], ...ICards[][]],
+) => {
   const divsCard = document.querySelectorAll('.words-card');
   divsCard.forEach((div) => {
     const isTopLayer = div.lastElementChild as HTMLElement;
@@ -14,6 +21,13 @@ const renderTopLayer = (card: HTMLElement, action: string) => {
       removeClassList(div, 'word-hidden');
     }
   });
+
+  const index = cards[CATEGORY].indexOf(store.getState().admCateg);
+  // console.log(index)
+  // console.log(card.id)
+  // console.log(cards)
+  const arr = cards[index + 1] as ICards[];
+  const objWordDesired = arr.find((item) => item.word === card.id);
 
   addClassList(card, 'word-hidden');
 
@@ -24,12 +38,14 @@ const renderTopLayer = (card: HTMLElement, action: string) => {
   const inputWord = document.createElement(Tags.INPUT);
   inputWord.type = 'text';
   inputWord.placeholder = 'Word';
+  inputWord.value = `${objWordDesired?.word}`;
   inputWord.className = 'word-top-layer-input-word';
   topLayer.append(inputWord);
 
   const inputTranslation = document.createElement(Tags.INPUT);
   inputTranslation.type = 'text';
   inputTranslation.placeholder = 'Translation';
+  inputTranslation.value = `${objWordDesired?.translation}`;
   inputTranslation.className = 'word-top-layer-input-translation';
   topLayer.append(inputTranslation);
 
@@ -97,6 +113,11 @@ const renderTopLayer = (card: HTMLElement, action: string) => {
   divBtns.append(btnCreate);
 };
 
+const updateWord = (card: HTMLDivElement) => {
+  console.log(getInputWord().value);
+  console.log(getInputTranslation().value);
+};
+
 const handlerClickPageWord = (
   cards: [string[], ...ICards[][]],
   event: Event,
@@ -110,7 +131,12 @@ const handlerClickPageWord = (
     const fileName = wordsSound.innerText.split(': ')[1];
     sound(fileName, IndexSounds.FIRST);
   } else if (checkClass(target, 'words-btn-change')) {
-    renderTopLayer(card, 'update');
+    renderTopLayer(card, 'update', cards);
+  } else if (checkClass(target, 'word-top-layer-btn-cancel')) {
+    const topLayer = card.lastElementChild as HTMLElement;
+    topLayer.remove();
+  } else if (checkClass(target, 'word-top-layer-btn-update')) {
+    updateWord(card);
   }
 };
 
