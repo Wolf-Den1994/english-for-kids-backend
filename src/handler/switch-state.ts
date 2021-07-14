@@ -1,5 +1,4 @@
-import { getCategory, getWordsByCategory } from '../api/api';
-import cards from '../cards';
+import { getWordsByCategory } from '../api/api';
 import { objGame } from '../control/obj-game';
 import { objNumberPage } from '../control/obj-page';
 import { objApp } from '../control/objs';
@@ -9,11 +8,9 @@ import { store } from '../store/store';
 import { arrDifficultWord } from '../train-difficult/render-train-difficult';
 import { addClassList } from '../utils/add-class';
 import { changeClassList } from '../utils/change-class';
-import { ElemClasses, NumberPage, StateApp } from '../utils/enums';
+import { ElemClasses, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import {
-  ICards,
-  IFullCards,
   IHTMLElems,
   IWordsMongo,
 } from '../utils/interfaces';
@@ -62,10 +59,10 @@ const changeStateOnPlay = (arr: IWordsMongo[], elems: IHTMLElems): void => {
   classIteration(addClassList, elems, arr);
 };
 
-export const switchState = async (event: Event) => {
+export const switchState = async (event: Event): Promise<void> => {
   const elems = getArrsElem();
   const target = event.target as HTMLInputElement;
-  const categories = await getCategory();
+  // const categories = await getCategory();
   const categoryName = list[store.getState().page];
   // console.log('store.getState().page', store.getState().page)
   // console.log('categoryName', categoryName)
@@ -79,9 +76,9 @@ export const switchState = async (event: Event) => {
       changeStateOnTrain(arrDifficultWord, elems);
     }
     if (isPageCategory()) {
-      console.log(store.getState().page, objNumberPage.main);
-      console.log(store.getState().page, objNumberPage.statistic);
-      console.log(store.getState().page, objNumberPage.difficult);
+      // console.log(store.getState().page, objNumberPage.main);
+      // console.log(store.getState().page, objNumberPage.statistic);
+      // console.log(store.getState().page, objNumberPage.difficult);
       changeStateOnTrain(words, elems);
     }
   } else {

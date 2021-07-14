@@ -4,7 +4,7 @@ import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { gameProcess, startGame } from '../play/game';
-import { playSound, playSoundServer, sound } from '../play/sound';
+import { playSoundServer, sound } from '../play/sound';
 import { resetStatistic } from '../statistic/reset';
 import { sortStatistic } from '../statistic/sort';
 import { changePage } from '../store/actions';
@@ -16,19 +16,16 @@ import {
 } from '../train-difficult/render-train-difficult';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { CATEGORY, imgCategories } from '../utils/consts';
+import { CATEGORY } from '../utils/consts';
 import {
   ElemClasses,
   Events,
   IndexSounds,
-  NumberPage,
   StateApp,
 } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import { getWord } from '../utils/get-word';
 import {
-  ICards,
-  IFullCards,
   IHTMLElems,
   IWordsMongo,
 } from '../utils/interfaces';
@@ -77,7 +74,7 @@ const workWithCards = (
     } else if (checkClasses(parent, elem, card, ElemClasses.SUBJECT)) {
       if (front) {
         const word: string = getWord(front);
-        const page = cards[store.getState().page] as ICards[];
+        // const page = cards[store.getState().page] as ICards[];
         fullCards.forEach((item) => {
           if (item.word === word) {
             item.train++;

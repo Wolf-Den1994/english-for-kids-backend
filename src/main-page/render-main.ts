@@ -13,7 +13,6 @@ import { handlerMenu, handlerSideBar } from '../sidebar/handler';
 import { renderSidebar } from '../sidebar/sidebar';
 import { ElemClasses, Events } from '../utils/enums';
 import {
-  getSidebar,
   inputSwitcher,
   label,
   menu,
@@ -21,7 +20,7 @@ import {
 } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
-export const renderMain = async () => {
+export const renderMain = async (): Promise<void> => {
   renderHeader();
   renderBtnSidebar();
   renderSwitcher();

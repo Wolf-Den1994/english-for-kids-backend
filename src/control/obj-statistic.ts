@@ -1,6 +1,6 @@
-import { getCards, getWords } from '../api/api';
+import { getWords } from '../api/api';
 import { NAME_LOCALSTORAGE } from '../utils/consts';
-import { IFullCards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 
 export const fullCards: IWordsMongo[] = [];
 // const infoLocal = localStorage.getItem(NAME_LOCALSTORAGE);

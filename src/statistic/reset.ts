@@ -1,7 +1,7 @@
 import { fullCards } from '../control/obj-statistic';
 import { NAME_LOCALSTORAGE } from '../utils/consts';
 import { Order } from '../utils/enums';
-import { IFullCards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 import { renderStatistic } from './render-statistic';
 
 const cleanArr = (arr: IWordsMongo[]) => {

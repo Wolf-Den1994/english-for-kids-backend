@@ -64,7 +64,7 @@ export async function createCards(newCategory: string): Promise<string | null> {
   return null;
 }
 
-export async function getCategory() {
+export async function getCategory(): Promise<ICategoriesMongo[]> {
   const response = await fetch(`${baseURL}/api/category`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
@@ -75,7 +75,7 @@ export async function getCategory() {
   return category;
 }
 
-export async function getCategoryByName(name: string) {
+export async function getCategoryByName(name: string): Promise<any> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
@@ -86,7 +86,7 @@ export async function getCategoryByName(name: string) {
   return category;
 }
 
-export async function createCategory(formData: FormData) {
+export async function createCategory(formData: FormData): Promise<any> {
   const response = await fetch(`${baseURL}/api/category/`, {
     method: 'POST',
     body: formData,
@@ -112,7 +112,7 @@ export async function putCategoryByName(
   return null;
 }
 
-export async function deleteCategory(name: string) {
+export async function deleteCategory(name: string): Promise<any> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'DELETE',
     headers: { Accept: 'application/json' },
@@ -126,7 +126,7 @@ export async function deleteCategory(name: string) {
   return null;
 }
 
-export async function getWords() {
+export async function getWords(): Promise<IWordsMongo[]> {
   const response = await fetch(`${baseURL}/api/words`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
@@ -137,7 +137,9 @@ export async function getWords() {
   return words;
 }
 
-export async function getWordsByCategory(categ: string) {
+export async function getWordsByCategory(
+  categ: string
+): Promise<IWordsMongo[]> {
   const response = await fetch(`${baseURL}/api/words/length/${categ}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
@@ -148,18 +150,17 @@ export async function getWordsByCategory(categ: string) {
   return categLength;
 }
 
-export async function createWord(formData: FormData) {
-  console.log(formData);
+export async function createWord(formData: FormData): Promise<any> {
   const response = await fetch(`${baseURL}/api/word/`, {
     method: 'POST',
     body: formData,
   });
   const word = await response.json();
-  console.log(word);
+  // console.log(word);
   return word;
 }
 
-export async function deleteWord(name: string) {
+export async function deleteWord(name: string): Promise<any> {
   const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'DELETE',
     headers: { Accept: 'application/json' },

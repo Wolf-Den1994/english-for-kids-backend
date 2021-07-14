@@ -1,8 +1,5 @@
 import {
-  deleteCategory,
-  getCards,
   getCategory,
-  getCategoryByName,
 } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';

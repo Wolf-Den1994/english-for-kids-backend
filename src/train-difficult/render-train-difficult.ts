@@ -1,25 +1,24 @@
-import { getWords } from '../api/api';
 import { objNumberPage } from '../control/obj-page';
 import { fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { changePage } from '../store/actions';
 import { store } from '../store/store';
 import { cleanField, render } from '../subject/render';
-import { NumberPage, Tags } from '../utils/enums';
+import { Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { IFullCards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 
 export const copyFullCards: IWordsMongo[] = [];
 export const arrDifficultWord: IWordsMongo[] = [];
 const NUMBER_CARDS_DISPLAYED = 8;
 
-export const renderTrainDifficult = async () => {
-  const words = await getWords();
+export const renderTrainDifficult = async (): Promise<void> => {
+  // const words = await getWords();
   copyFullCards.length = 0;
   arrDifficultWord.length = 0;
   let count = 0;
   copyFullCards.push(...fullCards.slice());
-  console.log(copyFullCards);
+  // console.log(copyFullCards);
 
   copyFullCards.sort((a, b) => (a.fails > b.fails ? -1 : 1));
   copyFullCards.forEach((item) => {

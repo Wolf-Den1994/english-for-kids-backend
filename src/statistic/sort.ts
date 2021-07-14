@@ -1,7 +1,7 @@
 import { fullCards } from '../control/obj-statistic';
 import { checkClass } from '../utils/check-class';
 import { Order, SortTitle } from '../utils/enums';
-import { IFullCards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { renderStatistic } from './render-statistic';
 

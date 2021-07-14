@@ -73,5 +73,5 @@ export const root = (): HTMLDivElement =>
 export const overlay = (): HTMLDivElement =>
   document.querySelector('#overlay') as HTMLDivElement;
 
-export const getSidebar = () =>
+export const getSidebar = (): HTMLElement =>
   document.querySelector('.sidebar') as HTMLElement;

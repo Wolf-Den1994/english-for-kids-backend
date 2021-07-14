@@ -1,17 +1,14 @@
 import {
-  getCards,
   getCategory,
-  getCategoryByName,
   getWordsByCategory,
 } from '../api/api';
 import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
-import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Events, Tags } from '../utils/enums';
 import { selectTitle } from '../utils/get-elems-words';
-import { ICards, ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
+import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {

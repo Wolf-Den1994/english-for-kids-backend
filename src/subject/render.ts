@@ -1,11 +1,11 @@
 import cards from '../cards';
-import { getCategory, getWordsByCategory } from '../api/api';
+import { getWordsByCategory } from '../api/api';
 import { objGame } from '../control/obj-game';
 import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
 import { LayoutPage, StateApp, Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { ICards, IFullCards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 
 export const cleanField = (): void => {
   objGame.counterErrors = 0;
@@ -103,7 +103,7 @@ export const render = (
   root().append(btnStartGame);
 };
 
-export const renderSubject = async (page: number) => {
+export const renderSubject = async (page: number): Promise<void> => {
   const index = page - 1;
   const categoryName = cards[CATEGORY][index];
   // console.log(categoryName)

@@ -1,10 +1,8 @@
 import { createWord, deleteWord, putWordByName } from '../api/api';
 import { sound } from '../play/sound';
 import { onNavigate } from '../routing/routes';
-import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { CATEGORY } from '../utils/consts';
 import { Events, IndexSounds, Tags } from '../utils/enums';
 import {
   getInputImage,
@@ -13,14 +11,13 @@ import {
   getInputWord,
   selectTitle,
 } from '../utils/get-elems-words';
-import { ICards, ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
+import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const renderTopLayer = (
   card: HTMLElement,
   action: string,
   words: IWordsMongo[],
-  categories: ICategoriesMongo[],
 ) => {
   const divsCard = document.querySelectorAll('.words-card');
   divsCard.forEach((div) => {
@@ -203,19 +200,19 @@ const handlerClickPageWord = (
 ) => {
   const target = event.target as HTMLElement;
   const card = target.closest('.words-card') as HTMLDivElement;
-  const idCard = card.id;
+  // const idCard = card.id;
   // console.log(idCard)
   if (checkClass(target, 'words-play-sound')) {
     const wordsSound = target.closest('.words-sound') as HTMLDivElement;
     const fileName = wordsSound.innerText.split(': ')[1];
     sound(fileName, IndexSounds.FIRST);
   } else if (checkClass(target, 'words-btn-change')) {
-    renderTopLayer(card, 'update', words, categories);
+    renderTopLayer(card, 'update', words);
   } else if (checkClass(target, 'word-top-layer-btn-cancel')) {
     const topLayer = card.lastElementChild as HTMLElement;
     topLayer.remove();
   } else if (checkClass(target, 'words-card-new')) {
-    renderTopLayer(card, 'create', words, categories);
+    renderTopLayer(card, 'create', words);
   } else if (checkClass(target, 'word-top-layer-btn-create')) {
     addWord();
   } else if (checkClass(target, 'words-bnt-remove')) {

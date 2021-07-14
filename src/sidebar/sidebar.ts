@@ -1,7 +1,6 @@
 // import cards from '../cards';
 import { getCategory } from '../api/api';
 import { objNumberPage } from '../control/obj-page';
-import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
 
 let isFirstLink = true;
@@ -14,7 +13,7 @@ export const list: string[] = [];
 
 export const links: HTMLAnchorElement[] = [];
 
-export const renderSidebar = async () => {
+export const renderSidebar = async (): Promise<void> => {
   const categories = await getCategory();
   list.length = 0;
 
@@ -29,13 +28,13 @@ export const renderSidebar = async () => {
   objNumberPage.statistic = list.length - 2;
   objNumberPage.difficult = list.length - 1;
   objNumberPage.login = list.length;
-  console.log(objNumberPage);
+  // console.log(objNumberPage);
 
   const sidebar = document.createElement(Tags.ASIDE);
   sidebar.className = `sidebar ${ElemClasses.HIDDEN}`;
   document.body.append(sidebar);
 
-  console.log(sidebar);
+  // console.log(sidebar);
   sidebar.innerHTML = '';
 
   const menu = document.createElement(Tags.UL);

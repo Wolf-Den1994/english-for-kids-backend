@@ -1,7 +1,7 @@
 import { objApp } from '../control/objs';
 import { Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { IFullCards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { btnDifficultWord, btnReset } from './button';
 import { mainStatistic } from './main';

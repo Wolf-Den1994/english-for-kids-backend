@@ -9,7 +9,7 @@ import { changeClassList } from '../utils/change-class';
 import { ElemClasses, IndexSounds, NumberPage, Tags } from '../utils/enums';
 import { getSoundPath } from '../utils/get-sound-path';
 import { getStringWord } from '../utils/get-word';
-import { ICards, IFullCards, IWordsMongo } from '../utils/interfaces';
+import { ICards, IWordsMongo } from '../utils/interfaces';
 import { sound } from './sound';
 
 const IN_INTEREST = 100;

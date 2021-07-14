@@ -1,4 +1,3 @@
-import cards from '../cards';
 import { renderCategory } from '../category/category';
 import { fullCards } from '../control/obj-statistic';
 import { changeActiveLink } from '../handler/links-active';
@@ -8,7 +7,6 @@ import { store } from '../store/store';
 import { renderSubject } from '../subject/render';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Events, NumberPage, Order } from '../utils/enums';
 import { removeClassList } from '../utils/remove-class';
 import { updateClassList } from '../utils/update-class';
@@ -17,7 +15,7 @@ import { openLoginModal } from '../login-modal/login-modal';
 import { input, label, menu, overlay, sidebar } from '../utils/get-elems';
 import { objNumberPage } from '../control/obj-page';
 
-export const handlerMenu = async (event: Event) => {
+export const handlerMenu = async (event: Event): Promise<void> => {
   const target = event.target as HTMLElement;
   if (checkClass(target, ElemClasses.MENU_LINK)) {
     const index = list.indexOf(target.innerHTML);
@@ -65,7 +63,7 @@ function openSidebar(): void {
 
 function closeSidebar(): void {
   removeClassList(document.body, ElemClasses.HIDDEN);
-  console.log(store.getState().page, '<', list.length - 2);
+  // console.log(store.getState().page, '<', list.length - 2);
   if (store.getState().page < list.length - 1) {
     input().checked = false;
     updateClassList(sidebar(), label(), ElemClasses.HIDDEN);

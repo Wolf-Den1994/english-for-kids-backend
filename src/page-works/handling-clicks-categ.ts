@@ -1,9 +1,6 @@
 import {
-  createCards,
   createCategory,
-  deleteCards,
   deleteCategory,
-  putCards,
   putCategoryByName,
 } from '../api/api';
 import { onNavigate } from '../routing/routes';
@@ -13,7 +10,7 @@ import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { Events, Tags } from '../utils/enums';
 import { inputFile, inputText } from '../utils/get-elems-categ';
-import { ICards, ICategoriesMongo } from '../utils/interfaces';
+import { ICategoriesMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const renderTopLayer = (card: HTMLDivElement, action: string) => {
