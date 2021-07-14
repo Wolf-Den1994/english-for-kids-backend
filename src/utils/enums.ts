@@ -99,6 +99,7 @@ export enum SortTitle {
   PLAY = 'play',
   ANSWERS = 'answers',
   ERRORS = 'errors',
+  FAILS = 'fails',
   PERCENT = 'percent',
 }
 

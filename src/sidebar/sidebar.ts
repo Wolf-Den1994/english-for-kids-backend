@@ -1,4 +1,6 @@
-import cards from '../cards';
+// import cards from '../cards';
+import { getCategory } from '../api/api';
+import { objNumberPage } from '../control/obj-page';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
 
@@ -8,17 +10,32 @@ const FIRST_PAGE = 'Main page';
 const LAST_PAGE = 'Statistic';
 const LOGIN = 'Login';
 
-export const list: string[] = cards[CATEGORY].slice();
-list.unshift(FIRST_PAGE);
-list.push(LAST_PAGE);
-list.push(LOGIN);
+export const list: string[] = [];
 
 export const links: HTMLAnchorElement[] = [];
 
-export const renderSidebar = (): void => {
+export const renderSidebar = async () => {
+  const categories = await getCategory();
+
+  for (let i = 0; i < categories.length; i++) {
+    list.push(categories[i].categoryName);
+  }
+
+  list.unshift(FIRST_PAGE);
+  list.push(LAST_PAGE);
+  list.push(LOGIN);
+
+  objNumberPage.statistic = list.length - 2;
+  objNumberPage.difficult = list.length - 1;
+  objNumberPage.login = list.length;
+  console.log(objNumberPage);
+
   const sidebar = document.createElement(Tags.ASIDE);
   sidebar.className = `sidebar ${ElemClasses.HIDDEN}`;
   document.body.append(sidebar);
+
+  console.log(sidebar);
+  sidebar.innerHTML = '';
 
   const menu = document.createElement(Tags.UL);
   menu.className = 'menu';

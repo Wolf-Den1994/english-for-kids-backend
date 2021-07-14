@@ -1,3 +1,5 @@
+import { getWords } from '../api/api';
+import { objNumberPage } from '../control/obj-page';
 import { fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { changePage } from '../store/actions';
@@ -5,32 +7,39 @@ import { store } from '../store/store';
 import { cleanField, render } from '../subject/render';
 import { NumberPage, Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { IFullCards } from '../utils/interfaces';
+import { IFullCards, IWordsMongo } from '../utils/interfaces';
 
-export const copyFullCards: IFullCards[] = [];
-export const arrDifficultWord: IFullCards[] = [];
+export const copyFullCards: IWordsMongo[] = [];
+export const arrDifficultWord: IWordsMongo[] = [];
 const NUMBER_CARDS_DISPLAYED = 8;
 
-export const renderTrainDifficult = (): void => {
+export const renderTrainDifficult = async () => {
+  const words = await getWords();
   copyFullCards.length = 0;
   arrDifficultWord.length = 0;
   let count = 0;
   copyFullCards.push(...fullCards.slice());
+  console.log(copyFullCards);
 
-  copyFullCards.sort((a, b) => (a.errors > b.errors ? -1 : 1));
+  copyFullCards.sort((a, b) => (a.fails > b.fails ? -1 : 1));
   copyFullCards.forEach((item) => {
-    if (item.errors > 0 && count !== NUMBER_CARDS_DISPLAYED) {
+    if (item.fails > 0 && count !== NUMBER_CARDS_DISPLAYED) {
       arrDifficultWord.push(item);
       count++;
     }
   });
 
-  store.dispatch(changePage(NumberPage.DIFFICULT));
+  store.dispatch(changePage(objNumberPage.difficult));
   cleanField();
 
   if (count > 0) {
     objApp.empryDifficult = false;
-    render('difficult', NumberPage.DIFFICULT, arrDifficultWord);
+    render(
+      'difficult',
+      objNumberPage.difficult,
+      arrDifficultWord,
+      'Train Diffucultt',
+    );
   } else {
     objApp.empryDifficult = true;
     const diffDiv = document.createElement(Tags.DIV);

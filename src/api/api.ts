@@ -1,4 +1,4 @@
-import { ICategoriesMongo, IUserData } from '../utils/interfaces';
+import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
 // const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 const baseURL = 'http://localhost';
@@ -71,7 +71,7 @@ export async function getCategory() {
   });
   // если запрос прошел нормально
   const category: ICategoriesMongo[] = await response.json();
-  console.log(category);
+  // console.log(category);
   return category;
 }
 
@@ -82,7 +82,7 @@ export async function getCategoryByName(name: string) {
   });
   // если запрос прошел нормально
   const category = await response.json();
-  console.log(category);
+  // console.log(category);
   return category;
 }
 
@@ -124,6 +124,28 @@ export async function deleteCategory(name: string) {
     return card;
   }
   return null;
+}
+
+export async function getWords() {
+  const response = await fetch(`${baseURL}/api/words`, {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+  });
+  // если запрос прошел нормально
+  const words: IWordsMongo[] = await response.json();
+  // console.log(words);
+  return words;
+}
+
+export async function getWordsByCategory(categ: string) {
+  const response = await fetch(`${baseURL}/api/words/length/${categ}`, {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+  });
+  // если запрос прошел нормально
+  const categLength: IWordsMongo[] = await response.json();
+  // console.log(categLength);
+  return categLength;
 }
 
 export async function loginHandler(

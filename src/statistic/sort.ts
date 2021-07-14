@@ -1,15 +1,15 @@
 import { fullCards } from '../control/obj-statistic';
 import { checkClass } from '../utils/check-class';
 import { Order, SortTitle } from '../utils/enums';
-import { IFullCards } from '../utils/interfaces';
+import { IFullCards, IWordsMongo } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { renderStatistic } from './render-statistic';
 
-export const sortCards: IFullCards[] = [];
+export const sortCards: IWordsMongo[] = [];
 
 const sortByTitle = (
-  arr: IFullCards[],
-  arg: keyof IFullCards,
+  arr: IWordsMongo[],
+  arg: keyof IWordsMongo,
   order: TypeOrder,
 ): void => {
   if (order === Order.ASC) {
@@ -20,8 +20,8 @@ const sortByTitle = (
 };
 
 const directionSorting = (
-  cards: IFullCards[],
-  column: keyof IFullCards,
+  cards: IWordsMongo[],
+  column: keyof IWordsMongo,
   sortAside: TypeOrder,
   renderAside: TypeOrder,
 ): void => {
@@ -105,15 +105,10 @@ export const sortStatistic = (title: HTMLTableHeaderCellElement): void => {
 
     case checkClass(title, getTitle(SortTitle.ERRORS)):
       checkClass(title, Order.DESC)
-        ? directionSorting(
-          newFullCards,
-          SortTitle.ERRORS,
-          Order.DESC,
-          Order.ASC,
-        )
+        ? directionSorting(newFullCards, SortTitle.FAILS, Order.DESC, Order.ASC)
         : directionSorting(
           newFullCards,
-          SortTitle.ERRORS,
+          SortTitle.FAILS,
           Order.ASC,
           Order.DESC,
         );

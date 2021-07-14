@@ -1,8 +1,14 @@
-import { getCards } from '../api/api';
+import {
+  getCards,
+  getWordsByCategory,
+  getCategory,
+  getWords,
+} from '../api/api';
 import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
+import { IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 export const changeCategory = `${head('categ')}`;
@@ -10,25 +16,32 @@ export const changeCategory = `${head('categ')}`;
 export const renderCategPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
-  const cards = await getCards('/api/cards');
+  const cards = await getCategory();
+  // const words = await getWords();
   const main = document.querySelector('.categ-main') as HTMLElement;
+  const arrWordsOnCategory = [];
 
-  for (let i = 0; i < cards[CATEGORY].length; i++) {
+  for (let i = 0; i < cards.length; i++) {
+    const categLength = await getWordsByCategory(cards[i].categoryName);
+    // console.log(categLength)
+    arrWordsOnCategory.push(categLength);
+  }
+  // console.log(arrWordsOnCategory)
+
+  for (let i = 0; i < cards.length; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'categ-card';
-    card.id = `${cards[CATEGORY][i]}`;
+    card.id = `${cards[i].categoryName}`;
     main.append(card);
 
     const name = document.createElement(Tags.P);
     name.className = 'categ-name';
-    name.innerHTML = `${cards[CATEGORY][i]}`;
+    name.innerHTML = `${cards[i].categoryName}`;
     card.append(name);
 
     const count = document.createElement(Tags.P);
     count.className = 'categ-count';
-    count.innerHTML = `<span class="categ-words">WORDS:</span> ${
-      cards[i + 1].length
-    }`;
+    count.innerHTML = `<span class="categ-words">WORDS:</span> ${arrWordsOnCategory[i].length}`;
     card.append(count);
 
     const divBtns = document.createElement(Tags.DIV);

@@ -1,10 +1,11 @@
 import cards from '../cards';
+import { getCategory, getWordsByCategory } from '../api/api';
 import { objGame } from '../control/obj-game';
 import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
 import { LayoutPage, StateApp, Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { ICards, IFullCards } from '../utils/interfaces';
+import { ICards, IFullCards, IWordsMongo } from '../utils/interfaces';
 
 export const cleanField = (): void => {
   objGame.counterErrors = 0;
@@ -14,14 +15,13 @@ export const cleanField = (): void => {
 export const render = (
   layout: string,
   pageNumber: number,
-  arrCards: ICards[] | IFullCards[],
+  words: IWordsMongo[],
+  categoryName: string,
 ): void => {
   const title = document.createElement(Tags.TITLE2);
   title.className = 'title';
   title.innerHTML =
-    layout === LayoutPage.SUBJECT
-      ? cards[CATEGORY][pageNumber]
-      : 'Train difficult words';
+    layout === LayoutPage.SUBJECT ? categoryName : 'Train difficult words';
   root().append(title);
 
   const score = document.createElement(Tags.DIV);
@@ -33,7 +33,7 @@ export const render = (
     layout === LayoutPage.SUBJECT ? LayoutPage.SUBJECT : LayoutPage.DIFFICULT;
   root().append(general);
 
-  for (let i = 0; i < arrCards.length; i++) {
+  for (let i = 0; i < words.length; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'main-card';
     general.append(card);
@@ -47,9 +47,9 @@ export const render = (
     flipper.append(front);
 
     const img = document.createElement(Tags.IMG);
-    const objCard = arrCards[i] as IFullCards;
-    img.src = `${arrCards[i].image}`;
-    img.alt = `${arrCards[i].word}`;
+    const objCard = words[i];
+    img.src = `${objCard.image}`;
+    img.alt = `${objCard.word}`;
     front.append(img);
 
     const pFront = document.createElement(Tags.P);
@@ -102,9 +102,13 @@ export const render = (
   root().append(btnStartGame);
 };
 
-export const renderSubject = (page: number): void => {
+export const renderSubject = async (page: number) => {
   const index = page - 1;
+  const categoryName = cards[CATEGORY][index];
+  // console.log(categoryName)
+  const words = await getWordsByCategory(categoryName);
   cleanField();
 
-  render(LayoutPage.SUBJECT, index, cards[index + 1] as ICards[]);
+  render(LayoutPage.SUBJECT, index, words, categoryName);
+  // console.log('11111111')
 };

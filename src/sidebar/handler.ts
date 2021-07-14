@@ -15,25 +15,32 @@ import { updateClassList } from '../utils/update-class';
 import { list } from './sidebar';
 import { openLoginModal } from '../login-modal/login-modal';
 import { input, label, menu, overlay, sidebar } from '../utils/get-elems';
+import { objNumberPage } from '../control/obj-page';
 
-export const handlerMenu = (event: Event): void => {
+export const handlerMenu = async (event: Event) => {
   const target = event.target as HTMLElement;
   if (checkClass(target, ElemClasses.MENU_LINK)) {
     const index = list.indexOf(target.innerHTML);
+    // console.log(list.length)
+    // console.log(index)
     changeActiveLink(target);
     if (index === 0) {
       store.dispatch(changePage(NumberPage.MAIN));
       renderCategory();
-    } else if (index <= cards[CATEGORY].length) {
+    } else if (index <= list.length - 3) {
+      // console.log('this page', list[index])
       store.dispatch(changePage(index));
-      renderSubject(store.getState().page);
-    } else if (index === NumberPage.STATISTIC) {
-      store.dispatch(changePage(NumberPage.STATISTIC));
+      await renderSubject(store.getState().page);
+    } else if (index === list.length - 2) {
+      // console.log('this page statistic', list[index])
+      store.dispatch(changePage(objNumberPage.statistic));
       renderStatistic(fullCards, Order.DESC);
     } else {
-      store.dispatch(changePage(NumberPage.LOGIN));
-      openLoginModal();
+      // console.log('this page login', list[index])
+      store.dispatch(changePage(objNumberPage.login));
+      await openLoginModal();
     }
+    // console.log('sssssssssss')
     closeSidebar();
   }
 };
@@ -58,7 +65,8 @@ function openSidebar(): void {
 
 function closeSidebar(): void {
   removeClassList(document.body, ElemClasses.HIDDEN);
-  if (store.getState().page !== NumberPage.LOGIN) {
+  console.log(store.getState().page, '<', list.length - 2);
+  if (store.getState().page < list.length - 1) {
     input().checked = false;
     updateClassList(sidebar(), label(), ElemClasses.HIDDEN);
     removeClassList(overlay(), ElemClasses.HIDDEN);

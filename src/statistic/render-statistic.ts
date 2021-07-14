@@ -1,7 +1,7 @@
 import { objApp } from '../control/objs';
 import { Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
-import { IFullCards } from '../utils/interfaces';
+import { IFullCards, IWordsMongo } from '../utils/interfaces';
 import { TypeOrder } from '../utils/types';
 import { btnDifficultWord, btnReset } from './button';
 import { mainStatistic } from './main';
@@ -17,7 +17,10 @@ const cleareField = () => {
   objApp.countStatistic = 1;
 };
 
-export const renderStatistic = (data: IFullCards[], order: TypeOrder): void => {
+export const renderStatistic = (
+  data: IWordsMongo[],
+  order: TypeOrder,
+): void => {
   cleareField();
 
   root().append(mainStatistic);
@@ -37,7 +40,7 @@ export const renderStatistic = (data: IFullCards[], order: TypeOrder): void => {
       <td class="cell cell-word">${data[i].translation}</td>
       <td class="cell">${data[i].train}</td>
       <td class="cell">${data[i].answers}</td>
-      <td class="cell">${data[i].errors}</td>
+      <td class="cell">${data[i].fails}</td>
       <td class="cell">${Math.round(data[i].percent)}</td>
     `;
     tbody.append(row);

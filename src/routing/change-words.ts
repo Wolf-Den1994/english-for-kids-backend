@@ -1,4 +1,9 @@
-import { getCards } from '../api/api';
+import {
+  getCards,
+  getCategory,
+  getCategoryByName,
+  getWordsByCategory,
+} from '../api/api';
 import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
@@ -6,17 +11,13 @@ import { store } from '../store/store';
 import { CATEGORY } from '../utils/consts';
 import { ElemClasses, Events, Tags } from '../utils/enums';
 import { selectTitle } from '../utils/get-elems-words';
-import { ICards } from '../utils/interfaces';
+import { ICards, ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
-const pointThisWords = (
-  cards: [string[], ...ICards[][]],
-  wrapper: HTMLDivElement,
-  index: number,
-) => {
+const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   wrapper.innerHTML = '';
 
-  cards[index + 1].forEach((item: string | ICards) => {
+  words.forEach((item: IWordsMongo) => {
     if (typeof item === 'object') {
       const card = document.createElement(Tags.DIV);
       card.className = 'words-card';
@@ -68,19 +69,41 @@ const pointThisWords = (
       card.append(btnRemove);
     }
   });
+
+  const card = document.createElement(Tags.DIV);
+  card.className = 'words-card words-card-new';
+  wrapper.append(card);
+
+  const newWord = document.createElement(Tags.P);
+  newWord.className = 'words-name words-name-new';
+  newWord.innerHTML = `Add new word`;
+  card.append(newWord);
+
+  const audio1 = document.createElement(Tags.AUDIO);
+  audio1.className = 'audio1';
+  card.append(audio1);
 };
 
-const selectCategory = (
-  cards: [string[], ...ICards[][]],
+const selectCategory = async (
+  words: IWordsMongo[],
+  categories: ICategoriesMongo[],
   wrapper: HTMLDivElement,
   event: Event,
 ) => {
   const target = event.target as HTMLSelectElement;
 
-  const index = cards[CATEGORY].indexOf(target.value);
-  store.dispatch(changeAdminCategory(target.value));
+  // let index;
+  // for (let i = 0; i < categories.length; i++) {
+  //   if (categories[i].categoryName === target.value) {
+  //     index = i
+  //   }
+  // }
 
-  pointThisWords(cards, wrapper, index);
+  // const index = words[CATEGORY].indexOf(target.value);
+  store.dispatch(changeAdminCategory(target.value));
+  const newWords = await getWordsByCategory(store.getState().admCateg);
+
+  pointThisWords(newWords, wrapper);
 };
 
 export const changeWords = `${head('words')}`;
@@ -88,7 +111,9 @@ export const changeWords = `${head('words')}`;
 export const renderWordsPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
-  const cards = await getCards('/api/cards');
+  // const cards = await getCards('/api/cards');
+  const categories = await getCategory();
+  const words = await getWordsByCategory(store.getState().admCateg);
   const main = document.querySelector('.words-main') as HTMLElement;
 
   const wrapperSelect = document.createElement(Tags.DIV);
@@ -104,10 +129,10 @@ export const renderWordsPage = async (): Promise<void> => {
   ElemselectTitle.className = 'words-select-title';
   wrapperSelect.append(ElemselectTitle);
 
-  for (let i = 0; i < cards[CATEGORY].length; i++) {
+  for (let i = 0; i < categories.length; i++) {
     const optionTitle = document.createElement('option');
-    optionTitle.value = `${cards[CATEGORY][i]}`;
-    optionTitle.innerHTML = `${cards[CATEGORY][i]}`;
+    optionTitle.value = `${categories[i].categoryName}`;
+    optionTitle.innerHTML = `${categories[i].categoryName}`;
     ElemselectTitle.append(optionTitle);
   }
 
@@ -117,26 +142,19 @@ export const renderWordsPage = async (): Promise<void> => {
 
   selectTitle().addEventListener(
     Events.CHANGE,
-    selectCategory.bind(null, cards, wrapperCards),
+    selectCategory.bind(null, words, categories, wrapperCards),
   );
 
-  const index = cards[CATEGORY].indexOf(store.getState().admCateg);
+  // let index;
+  // for (let i = 0; i < categories.length; i++) {
+  //   if (categories[i].categoryName === store.getState().admCateg) {
+  //     index = i
+  //   }
+  // }
+  // const index = cards[CATEGORY].indexOf(store.getState().admCateg);
   selectTitle().value = `${store.getState().admCateg}`;
 
-  pointThisWords(cards, wrapperCards, index);
+  pointThisWords(words, wrapperCards);
 
-  const card = document.createElement(Tags.DIV);
-  card.className = 'words-card words-card-new';
-  wrapperCards.append(card);
-
-  const newWord = document.createElement(Tags.P);
-  newWord.className = 'words-name words-name-new';
-  newWord.innerHTML = `Add new word`;
-  card.append(newWord);
-
-  const audio1 = document.createElement(Tags.AUDIO);
-  audio1.className = 'audio1';
-  card.append(audio1);
-
-  handlingClicksWordPage(main, cards);
+  handlingClicksWordPage(main, words, categories);
 };

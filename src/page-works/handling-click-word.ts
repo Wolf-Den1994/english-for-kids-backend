@@ -5,13 +5,14 @@ import { checkClass } from '../utils/check-class';
 import { CATEGORY } from '../utils/consts';
 import { Events, IndexSounds, Tags } from '../utils/enums';
 import { getInputTranslation, getInputWord } from '../utils/get-elems-words';
-import { ICards } from '../utils/interfaces';
+import { ICards, ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const renderTopLayer = (
   card: HTMLElement,
   action: string,
-  cards: [string[], ...ICards[][]],
+  words: IWordsMongo[],
+  categories: ICategoriesMongo[],
 ) => {
   const divsCard = document.querySelectorAll('.words-card');
   divsCard.forEach((div) => {
@@ -22,12 +23,21 @@ const renderTopLayer = (
     }
   });
 
-  const index = cards[CATEGORY].indexOf(store.getState().admCateg);
+  // let index;
+  // for (let i = 0; i < categories.length; i++) {
+  //   if (categories[i].categoryName === store.getState().admCateg) {
+  //     index = i;
+  //   }
+  // }
+
+  // const index = cards[CATEGORY].indexOf(store.getState().admCateg);
   // console.log(index)
   // console.log(card.id)
   // console.log(cards)
-  const arr = cards[index + 1] as ICards[];
-  const objWordDesired = arr.find((item) => item.word === card.id);
+  // const arr = categories[index as number + 1];
+  // console.log('arr', arr)
+  const objWordDesired = words.find((item) => item.word === card.id);
+  // console.log('objWordDesired', objWordDesired)
 
   addClassList(card, 'word-hidden');
 
@@ -119,7 +129,8 @@ const updateWord = (card: HTMLDivElement) => {
 };
 
 const handlerClickPageWord = (
-  cards: [string[], ...ICards[][]],
+  words: IWordsMongo[],
+  categories: ICategoriesMongo[],
   event: Event,
 ) => {
   const target = event.target as HTMLElement;
@@ -131,7 +142,7 @@ const handlerClickPageWord = (
     const fileName = wordsSound.innerText.split(': ')[1];
     sound(fileName, IndexSounds.FIRST);
   } else if (checkClass(target, 'words-btn-change')) {
-    renderTopLayer(card, 'update', cards);
+    renderTopLayer(card, 'update', words, categories);
   } else if (checkClass(target, 'word-top-layer-btn-cancel')) {
     const topLayer = card.lastElementChild as HTMLElement;
     topLayer.remove();
@@ -142,7 +153,11 @@ const handlerClickPageWord = (
 
 export const handlingClicksWordPage = (
   main: HTMLElement,
-  cards: [string[], ...ICards[][]],
+  words: IWordsMongo[],
+  categories: ICategoriesMongo[],
 ): void => {
-  main.addEventListener(Events.CLICK, handlerClickPageWord.bind(null, cards));
+  main.addEventListener(
+    Events.CLICK,
+    handlerClickPageWord.bind(null, words, categories),
+  );
 };

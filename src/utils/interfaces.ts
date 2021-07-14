@@ -49,3 +49,18 @@ export interface ICategoriesMongo {
   image: string;
   _id: string;
 }
+
+export interface IWordsMongo {
+  _id: string;
+  number: number;
+  category: string;
+  word: string;
+  translation: string;
+  image: string;
+  audioSrc: string;
+  train: number;
+  play: number;
+  fails: number;
+  answers: number;
+  percent: number;
+}

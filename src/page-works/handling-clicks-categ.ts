@@ -2,6 +2,7 @@ import {
   createCards,
   createCategory,
   deleteCards,
+  deleteCategory,
   putCards,
   putCategoryByName,
 } from '../api/api';
@@ -12,7 +13,7 @@ import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { Events, Tags } from '../utils/enums';
 import { inputFile, inputText } from '../utils/get-elems-categ';
-import { ICards } from '../utils/interfaces';
+import { ICards, ICategoriesMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const renderTopLayer = (card: HTMLDivElement, action: string) => {
@@ -70,14 +71,25 @@ const renderTopLayer = (card: HTMLDivElement, action: string) => {
 };
 
 const updateCategoryName = async (card: HTMLElement) => {
-  if (inputText().value) {
-    await putCards({ oldName: card.id, newName: inputText().value });
+  // if (inputText().value) {
+  if (inputFile() && inputText()) {
+    const formData = new FormData();
+
+    const image = inputFile();
+    const src = image.files as FileList;
+    const imageSrc = src[0];
+
+    formData.set('name', inputText().value);
+    formData.set('image', imageSrc);
+
+    await putCategoryByName(formData, card.id);
     onNavigate('/category');
   }
+  // }
 };
 
 const deleteCategoryByName = async (card: HTMLElement) => {
-  await deleteCards(card.id);
+  await deleteCategory(card.id);
   onNavigate('/category');
 };
 
@@ -101,19 +113,16 @@ const createCategori = async () => {
     const image = inputFile();
     const src = image.files as FileList;
     const imageSrc = src[0];
-
-    console.log(imageSrc);
+    // console.log(imageSrc);
 
     formData.set('name', inputText().value);
     formData.set('image', imageSrc);
-    putCategoryByName(formData, 'zxc');
+    await createCategory(formData);
+    onNavigate('/category');
   }
 };
 
-const handlerClickPageCategory = (
-  cards: [string[], ...ICards[][]],
-  event: Event,
-) => {
+const handlerClickPageCategory = (cards: ICategoriesMongo[], event: Event) => {
   const target = event.target as HTMLElement;
   const card = target.closest('.categ-card') as HTMLDivElement;
   const idCard = card.id;
@@ -140,7 +149,7 @@ const handlerClickPageCategory = (
 
 export const handlingClicks = (
   main: HTMLElement,
-  cards: [string[], ...ICards[][]],
+  cards: ICategoriesMongo[],
 ): void => {
   main.addEventListener(
     Events.CLICK,

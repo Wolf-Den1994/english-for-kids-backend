@@ -1,5 +1,6 @@
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
+import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { gameProcess, startGame } from '../play/game';
@@ -15,7 +16,7 @@ import {
 } from '../train-difficult/render-train-difficult';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { imgCategories } from '../utils/consts';
+import { CATEGORY, imgCategories } from '../utils/consts';
 import {
   ElemClasses,
   Events,
@@ -25,7 +26,12 @@ import {
 } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import { getWord } from '../utils/get-word';
-import { ICards, IFullCards, IHTMLElems } from '../utils/interfaces';
+import {
+  ICards,
+  IFullCards,
+  IHTMLElems,
+  IWordsMongo,
+} from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 import { changeActiveLink } from './links-active';
 
@@ -48,10 +54,14 @@ const addListener = (card: HTMLDivElement): void => {
 };
 
 const categotySelection = (card: HTMLDivElement): void => {
-  const word: string = getWord(card);
-  const index = imgCategories.indexOf(word) + 1;
+  // const word: string = getWord(card);
+  // const index = imgCategories.indexOf(word) + 1;
+  const categoryNames = cards[CATEGORY];
+  // console.log(categoryNames)
+  const index = categoryNames.indexOf(card.id) + 1;
   store.dispatch(changePage(index));
   changeActiveLink(index);
+  // console.log(index)
   renderSubject(index);
 };
 
@@ -98,7 +108,7 @@ const workWithStatistic = (
 
 const workWithDiffTrain = (front: HTMLDivElement): void => {
   const word: string = getWord(front);
-  const obj = copyFullCards.find((item) => item.word === word) as IFullCards;
+  const obj = copyFullCards.find((item) => item.word === word) as IWordsMongo;
   sound(obj.audioSrc, IndexSounds.FIRST);
 };
 
@@ -115,17 +125,17 @@ export const selectionHandler = (event: Event): void => {
   const titleTh = elem.closest('.title-th') as HTMLTableHeaderCellElement;
   if (store.getState().mode === StateApp.TRAIN) {
     workWithCards(elem, card, front);
-    if (store.getState().page === NumberPage.STATISTIC) {
+    if (store.getState().page === objNumberPage.statistic) {
       workWithStatistic(elem, titleTh);
     } else if (
-      store.getState().page === NumberPage.DIFFICULT &&
+      store.getState().page === objNumberPage.difficult &&
       !objApp.empryDifficult
     ) {
       workWithDiffTrain(front);
     }
-  } else if (store.getState().page === NumberPage.MAIN) {
+  } else if (store.getState().page === objNumberPage.main) {
     categotySelection(card);
-  } else if (store.getState().page === NumberPage.STATISTIC) {
+  } else if (store.getState().page === objNumberPage.statistic) {
     workWithStatistic(elem, titleTh);
   } else if (checkClass(elem, ElemClasses.BTN_START_GAME)) {
     startGame(elem);

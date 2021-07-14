@@ -1,6 +1,9 @@
+import { getCategory, getWordsByCategory } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
+import { objNumberPage } from '../control/obj-page';
 import { objApp } from '../control/objs';
+import { list } from '../sidebar/sidebar';
 import { changeMode } from '../store/actions';
 import { store } from '../store/store';
 import { arrDifficultWord } from '../train-difficult/render-train-difficult';
@@ -8,13 +11,18 @@ import { addClassList } from '../utils/add-class';
 import { changeClassList } from '../utils/change-class';
 import { ElemClasses, NumberPage, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
-import { ICards, IFullCards, IHTMLElems } from '../utils/interfaces';
+import {
+  ICards,
+  IFullCards,
+  IHTMLElems,
+  IWordsMongo,
+} from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const isPageCategory = (): boolean =>
-  store.getState().page !== NumberPage.MAIN &&
-  store.getState().page !== NumberPage.STATISTIC &&
-  store.getState().page !== NumberPage.DIFFICULT;
+  store.getState().page !== objNumberPage.main &&
+  store.getState().page !== objNumberPage.statistic &&
+  store.getState().page !== objNumberPage.difficult;
 
 const classIteration = (
   fn: (
@@ -22,7 +30,7 @@ const classIteration = (
     elemClass: string,
   ) => void,
   elems: IHTMLElems,
-  arr: IFullCards[] | ICards[],
+  arr: IWordsMongo[],
   classChanger?: (i: number) => void,
 ) => {
   for (let i = 0; i < arr.length; i++) {
@@ -33,10 +41,7 @@ const classIteration = (
   }
 };
 
-const changeStateOnTrain = (
-  arr: IFullCards[] | ICards[],
-  elems: IHTMLElems,
-): void => {
+const changeStateOnTrain = (arr: IWordsMongo[], elems: IHTMLElems): void => {
   store.dispatch(changeMode(StateApp.TRAIN));
   elems.score.innerHTML = '';
   objGame.counterErrors = 0;
@@ -51,39 +56,44 @@ const changeStateOnTrain = (
   );
 };
 
-const changeStateOnPlay = (
-  arr: IFullCards[] | ICards[],
-  elems: IHTMLElems,
-): void => {
+const changeStateOnPlay = (arr: IWordsMongo[], elems: IHTMLElems): void => {
   store.dispatch(changeMode(StateApp.PLAY));
   removeClassList(elems.btnStartGame, ElemClasses.PLAY);
   classIteration(addClassList, elems, arr);
 };
 
-export const switchState = (event: Event): void => {
+export const switchState = async (event: Event) => {
   const elems = getArrsElem();
   const target = event.target as HTMLInputElement;
+  const categories = await getCategory();
+  const categoryName = list[store.getState().page];
+  // console.log('store.getState().page', store.getState().page)
+  // console.log('categoryName', categoryName)
+  const words = await getWordsByCategory(categoryName);
   if (target.checked) {
     store.dispatch(changeMode(StateApp.TRAIN));
     if (
-      store.getState().page === NumberPage.DIFFICULT &&
+      store.getState().page === objNumberPage.difficult &&
       !objApp.empryDifficult
     ) {
       changeStateOnTrain(arrDifficultWord, elems);
     }
     if (isPageCategory()) {
-      changeStateOnTrain(cards[store.getState().page] as ICards[], elems);
+      console.log(store.getState().page, objNumberPage.main);
+      console.log(store.getState().page, objNumberPage.statistic);
+      console.log(store.getState().page, objNumberPage.difficult);
+      changeStateOnTrain(words, elems);
     }
   } else {
     store.dispatch(changeMode(StateApp.PLAY));
     if (
-      store.getState().page === NumberPage.DIFFICULT &&
+      store.getState().page === objNumberPage.difficult &&
       !objApp.empryDifficult
     ) {
       changeStateOnPlay(arrDifficultWord, elems);
     }
     if (isPageCategory()) {
-      changeStateOnPlay(cards[store.getState().page] as ICards[], elems);
+      changeStateOnPlay(words, elems);
     }
   }
 };
