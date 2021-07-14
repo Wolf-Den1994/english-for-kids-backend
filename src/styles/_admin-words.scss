@@ -88,6 +88,9 @@
 
       .words-image {
         margin: 0 0 13px 0;
+        width: 246px;
+        height: 163px;
+        object-fit: scale-down;
       }
 
       .words-btn-change {
@@ -151,6 +154,10 @@
 
       .words-sound {
         position: relative;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        min-height: 49px;
+        
         .words-play-sound {
           background-image: url(./assets/image/play_btn.svg);
           background-repeat: no-repeat;

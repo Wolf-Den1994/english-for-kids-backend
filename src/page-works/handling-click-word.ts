@@ -1,10 +1,18 @@
+import { createWord, deleteWord, putWordByName } from '../api/api';
 import { sound } from '../play/sound';
+import { onNavigate } from '../routing/routes';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { CATEGORY } from '../utils/consts';
 import { Events, IndexSounds, Tags } from '../utils/enums';
-import { getInputTranslation, getInputWord } from '../utils/get-elems-words';
+import {
+  getInputImage,
+  getInputSound,
+  getInputTranslation,
+  getInputWord,
+  selectTitle,
+} from '../utils/get-elems-words';
 import { ICards, ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
@@ -48,14 +56,16 @@ const renderTopLayer = (
   const inputWord = document.createElement(Tags.INPUT);
   inputWord.type = 'text';
   inputWord.placeholder = 'Word';
-  inputWord.value = `${objWordDesired?.word}`;
+  inputWord.value = `${objWordDesired ? objWordDesired.word : ''}`;
   inputWord.className = 'word-top-layer-input-word';
   topLayer.append(inputWord);
 
   const inputTranslation = document.createElement(Tags.INPUT);
   inputTranslation.type = 'text';
   inputTranslation.placeholder = 'Translation';
-  inputTranslation.value = `${objWordDesired?.translation}`;
+  inputTranslation.value = `${
+    objWordDesired ? objWordDesired.translation : ''
+  }`;
   inputTranslation.className = 'word-top-layer-input-translation';
   topLayer.append(inputTranslation);
 
@@ -123,9 +133,67 @@ const renderTopLayer = (
   divBtns.append(btnCreate);
 };
 
-const updateWord = (card: HTMLDivElement) => {
-  console.log(getInputWord().value);
-  console.log(getInputTranslation().value);
+const addWord = async () => {
+  if (
+    getInputWord() &&
+    getInputTranslation() &&
+    getInputSound() &&
+    getInputImage() &&
+    selectTitle()
+  ) {
+    const formData = new FormData();
+
+    const soundElem = getInputSound();
+    const srcSound = soundElem.files as FileList;
+    const soundFile = srcSound[0];
+
+    const image = getInputImage();
+    const srcImage = image.files as FileList;
+    const imageFile = srcImage[0];
+
+    formData.set('word', getInputWord().value);
+    formData.set('translate', getInputTranslation().value);
+    formData.set('category', selectTitle().value);
+    formData.set('sound', soundFile);
+    formData.set('image', imageFile);
+
+    await createWord(formData);
+    onNavigate('/words');
+  }
+};
+
+const deleteWordByName = async (card: HTMLDivElement) => {
+  await deleteWord(card.id);
+  onNavigate('/words');
+};
+
+const updateCategoryName = async (card: HTMLDivElement) => {
+  if (
+    getInputWord() &&
+    getInputTranslation() &&
+    getInputSound() &&
+    getInputImage() &&
+    selectTitle()
+  ) {
+    const formData = new FormData();
+
+    const soundElem = getInputSound();
+    const srcSound = soundElem.files as FileList;
+    const soundFile = srcSound[0];
+
+    const image = getInputImage();
+    const srcImage = image.files as FileList;
+    const imageFile = srcImage[0];
+
+    formData.set('word', getInputWord().value);
+    formData.set('translate', getInputTranslation().value);
+    formData.set('category', selectTitle().value);
+    formData.set('sound', soundFile);
+    formData.set('image', imageFile);
+
+    await putWordByName(formData, card.id);
+    onNavigate('/words');
+  }
 };
 
 const handlerClickPageWord = (
@@ -146,8 +214,14 @@ const handlerClickPageWord = (
   } else if (checkClass(target, 'word-top-layer-btn-cancel')) {
     const topLayer = card.lastElementChild as HTMLElement;
     topLayer.remove();
+  } else if (checkClass(target, 'words-card-new')) {
+    renderTopLayer(card, 'create', words, categories);
+  } else if (checkClass(target, 'word-top-layer-btn-create')) {
+    addWord();
+  } else if (checkClass(target, 'words-bnt-remove')) {
+    deleteWordByName(card);
   } else if (checkClass(target, 'word-top-layer-btn-update')) {
-    updateWord(card);
+    updateCategoryName(card);
   }
 };
 

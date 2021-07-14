@@ -4,7 +4,7 @@ import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { gameProcess, startGame } from '../play/game';
-import { playSound, sound } from '../play/sound';
+import { playSound, playSoundServer, sound } from '../play/sound';
 import { resetStatistic } from '../statistic/reset';
 import { sortStatistic } from '../statistic/sort';
 import { changePage } from '../store/actions';
@@ -84,7 +84,9 @@ const workWithCards = (
           }
         });
         dispatchInfo(fullCards);
-        playSound(page, word);
+        // playSound(page, word);
+        // console.log(card)
+        playSoundServer(card.id);
       }
     } else if (checkClass(elem, ElemClasses.SVG)) {
       addClassList(card, ElemClasses.HOVER);

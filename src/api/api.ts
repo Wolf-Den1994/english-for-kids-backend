@@ -118,10 +118,10 @@ export async function deleteCategory(name: string) {
     headers: { Accept: 'application/json' },
   });
   if (response.ok === true) {
-    const card = await response.json();
+    const category = await response.json();
     // eslint-disable-next-line no-console
     // console.log(card);
-    return card;
+    return category;
   }
   return null;
 }
@@ -146,6 +146,48 @@ export async function getWordsByCategory(categ: string) {
   const categLength: IWordsMongo[] = await response.json();
   // console.log(categLength);
   return categLength;
+}
+
+export async function createWord(formData: FormData) {
+  console.log(formData);
+  const response = await fetch(`${baseURL}/api/word/`, {
+    method: 'POST',
+    body: formData,
+  });
+  const word = await response.json();
+  console.log(word);
+  return word;
+}
+
+export async function deleteWord(name: string) {
+  const response = await fetch(`${baseURL}/api/word/${name}`, {
+    method: 'DELETE',
+    headers: { Accept: 'application/json' },
+  });
+  if (response.ok === true) {
+    const word = await response.json();
+    // eslint-disable-next-line no-console
+    // console.log(card);
+    return word;
+  }
+  return null;
+}
+
+export async function putWordByName(
+  formData: FormData,
+  name: string,
+): Promise<string | null> {
+  const response = await fetch(`${baseURL}/api/word/${name}`, {
+    method: 'PUT',
+    body: formData,
+  });
+  if (response.ok === true) {
+    const card = await response.json();
+    // eslint-disable-next-line no-console
+    console.log(card);
+    return card;
+  }
+  return null;
 }
 
 export async function loginHandler(

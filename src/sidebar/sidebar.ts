@@ -16,6 +16,7 @@ export const links: HTMLAnchorElement[] = [];
 
 export const renderSidebar = async () => {
   const categories = await getCategory();
+  list.length = 0;
 
   for (let i = 0; i < categories.length; i++) {
     list.push(categories[i].categoryName);

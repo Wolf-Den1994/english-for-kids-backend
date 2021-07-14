@@ -36,6 +36,7 @@ export const render = (
   for (let i = 0; i < words.length; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'main-card';
+    card.id = `${words[i].audioSrc}`;
     general.append(card);
 
     const flipper = document.createElement(Tags.DIV);

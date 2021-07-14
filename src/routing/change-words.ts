@@ -55,7 +55,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
 
       const image = document.createElement(Tags.IMG);
       image.className = `words-image words-image-${item.word}`;
-      image.src = `./${item.image}`;
+      image.src = `${item.image}`;
       image.alt = `${item.word}`;
       card.append(image);
 

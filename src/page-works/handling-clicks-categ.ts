@@ -76,11 +76,11 @@ const updateCategoryName = async (card: HTMLElement) => {
     const formData = new FormData();
 
     const image = inputFile();
-    const src = image.files as FileList;
-    const imageSrc = src[0];
+    const srcImage = image.files as FileList;
+    const imageFile = srcImage[0];
 
     formData.set('name', inputText().value);
-    formData.set('image', imageSrc);
+    formData.set('image', imageFile);
 
     await putCategoryByName(formData, card.id);
     onNavigate('/category');
@@ -94,29 +94,16 @@ const deleteCategoryByName = async (card: HTMLElement) => {
 };
 
 const createCategori = async () => {
-  // if (inputFile() && inputText()) {
-  //   const formData = new FormData();
-
-  //   const image = inputFile()
-  //   const src = image.files as FileList
-  //   const imageSrc = src[0]
-
-  //   console.log(imageSrc)
-
-  //   formData.set('name', inputText().value)
-  //   formData.set('image', imageSrc)
-  // createCategory(formData)
-  // }
   if (inputFile() && inputText()) {
     const formData = new FormData();
 
     const image = inputFile();
-    const src = image.files as FileList;
-    const imageSrc = src[0];
+    const srcImage = image.files as FileList;
+    const imageFile = srcImage[0];
     // console.log(imageSrc);
 
     formData.set('name', inputText().value);
-    formData.set('image', imageSrc);
+    formData.set('image', imageFile);
     await createCategory(formData);
     onNavigate('/category');
   }
