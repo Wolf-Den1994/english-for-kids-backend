@@ -1,8 +1,4 @@
-import {
-  createCategory,
-  deleteCategory,
-  putCategoryByName,
-} from '../api/api';
+import { createCategory, deleteCategory, putCategoryByName } from '../api/api';
 import { onNavigate } from '../routing/routes';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
@@ -109,25 +105,27 @@ const createCategori = async () => {
 const handlerClickPageCategory = (cards: ICategoriesMongo[], event: Event) => {
   const target = event.target as HTMLElement;
   const card = target.closest('.categ-card') as HTMLDivElement;
-  const idCard = card.id;
-  // const index = cards[CATEGORY].indexOf(idCard);
-  if (checkClass(target, 'categ-bnt-add')) {
-    store.dispatch(changeAdminCategory(`${idCard}`));
-    onNavigate('/words');
-  } else if (checkClass(target, 'categ-bnt-update')) {
-    renderTopLayer(card, 'update');
-    // cards[CATEGORY].map(item => item = item === idCard ? idCard : item)
-  } else if (checkClass(target, 'categ-top-layer-btn-cancel')) {
-    const topLayer = card.lastElementChild as HTMLElement;
-    topLayer.remove();
-  } else if (checkClass(target, 'categ-top-layer-btn-update')) {
-    updateCategoryName(card);
-  } else if (checkClass(target, 'categ-bnt-remove')) {
-    deleteCategoryByName(card);
-  } else if (checkClass(target, 'categ-card-new')) {
-    renderTopLayer(card, 'create');
-  } else if (checkClass(target, 'categ-top-layer-btn-create')) {
-    createCategori();
+  if (card) {
+    const idCard = card.id;
+    // const index = cards[CATEGORY].indexOf(idCard);
+    if (checkClass(target, 'categ-bnt-add')) {
+      store.dispatch(changeAdminCategory(`${idCard}`));
+      onNavigate('/words');
+    } else if (checkClass(target, 'categ-bnt-update')) {
+      renderTopLayer(card, 'update');
+      // cards[CATEGORY].map(item => item = item === idCard ? idCard : item)
+    } else if (checkClass(target, 'categ-top-layer-btn-cancel')) {
+      const topLayer = card.lastElementChild as HTMLElement;
+      topLayer.remove();
+    } else if (checkClass(target, 'categ-top-layer-btn-update')) {
+      updateCategoryName(card);
+    } else if (checkClass(target, 'categ-bnt-remove')) {
+      deleteCategoryByName(card);
+    } else if (checkClass(target, 'categ-card-new')) {
+      renderTopLayer(card, 'create');
+    } else if (checkClass(target, 'categ-top-layer-btn-create')) {
+      createCategori();
+    }
   }
 };
 

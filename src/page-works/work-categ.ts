@@ -1,10 +1,12 @@
 import { onNavigate } from '../routing/routes';
 import { addClassList } from '../utils/add-class';
+import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { Events } from '../utils/enums';
 import { linkCateg, linkOut, linkWords } from '../utils/get-elems-categ';
 import { removeClassList } from '../utils/remove-class';
 
 export const rederectOnHome = (): void => {
+  localStorage.removeItem(LOCAL_STORAGE_USER_ADMIN)
   document.body.innerHTML = '';
   onNavigate('/');
 };
