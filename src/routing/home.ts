@@ -7,6 +7,6 @@ import { renderMain } from '../main-page/render-main';
 
 export const changeHome = (): void => {
   renderMain();
-  getCards('/api/cards');
-  getCards('/api/fullcards');
+  // getCards('/api/cards');
+  // getCards('/api/fullcards');
 };
