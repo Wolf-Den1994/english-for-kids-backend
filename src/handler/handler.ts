@@ -55,11 +55,13 @@ const categotySelection = (card: HTMLDivElement): void => {
   // const index = imgCategories.indexOf(word) + 1;
   const categoryNames = cards[CATEGORY];
   // console.log(categoryNames)
-  const index = categoryNames.indexOf(card.id) + 1;
-  store.dispatch(changePage(index));
-  changeActiveLink(index);
-  // console.log(index)
-  renderSubject(index);
+  if (card) {
+    const index = categoryNames.indexOf(card.id) + 1;
+    store.dispatch(changePage(index));
+    changeActiveLink(index);
+    // console.log(index)
+    renderSubject(index);
+  }
 };
 
 const workWithCards = (

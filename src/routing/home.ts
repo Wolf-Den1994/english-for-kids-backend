@@ -1,4 +1,3 @@
-import { getCards } from '../api/api';
 import { renderMain } from '../main-page/render-main';
 
 // export const changeHome = `

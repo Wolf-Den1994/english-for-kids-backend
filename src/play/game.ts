@@ -1,15 +1,17 @@
+import { getWordsByCategory } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
+import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { renderFinish } from '../finish/finish';
 import { store } from '../store/store';
-import { arrDifficultWord } from '../train-difficult/render-train-difficult';
 import { addClassList } from '../utils/add-class';
 import { changeClassList } from '../utils/change-class';
-import { ElemClasses, IndexSounds, NumberPage, Tags } from '../utils/enums';
+import { CATEGORY } from '../utils/consts';
+import { ElemClasses, IndexSounds, Tags } from '../utils/enums';
 import { getSoundPath } from '../utils/get-sound-path';
 import { getStringWord } from '../utils/get-word';
-import { ICards, IWordsMongo } from '../utils/interfaces';
+import { IWordsMongo } from '../utils/interfaces';
 import { sound } from './sound';
 
 const IN_INTEREST = 100;
@@ -22,28 +24,38 @@ const addStars = (nameClass: string): void => {
   score.append(star);
 };
 
-const generateRandom = (page: ICards[]): string[] => {
+const generateRandom = (words: string[]): string[] => {
   const arrAudios: string[] = [];
-  for (let i = 0; i < page.length; i++) {
-    arrAudios.push(page[i].audioSrc);
+  for (let i = 0; i < words.length; i++) {
+    arrAudios.push(words[i]);
   }
   return arrAudios.sort(() => Math.random() - 0.5);
 };
 
-const playingArrOfSounds = (arrSounds: string[]) => {
-  objGame.arrAudios = arrSounds;
-  sound(arrSounds[0], IndexSounds.FIRST);
+const playingArrOfSounds = (words: IWordsMongo[]) => {
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].word === objGame.arrAudios[0]) {
+      sound(words[i].audioSrc, IndexSounds.FIRST);
+    }
+  }
 };
 
-export const startGame = (elem: HTMLElement): void => {
+export const startGame = async (elem: HTMLElement): Promise<void> => {
+  const categoryName = cards[CATEGORY][store.getState().page - 1];
+  const words = await getWordsByCategory(categoryName);
+  const arrWords: string[] = [];
+  for (let i = 0; i < words.length; i++) {
+    arrWords.push(words[i].word);
+  }
   changeClassList(elem, ElemClasses.BTN_START_GAME, ElemClasses.REPEAT);
-  if (store.getState().page === NumberPage.DIFFICULT) {
-    const randomAudios = generateRandom(arrDifficultWord);
-    playingArrOfSounds(randomAudios);
+  if (store.getState().page === objNumberPage.difficult) {
+    // const randomAudios = generateRandom(arrDifficultWord);
+    // playingArrOfSounds(randomAudios);
   } else {
-    const page = cards[store.getState().page] as ICards[];
-    const randomAudios = generateRandom(page);
-    playingArrOfSounds(randomAudios);
+    // const page = cards[store.getState().page] as ICards[];
+    const randomWordsForSound = generateRandom(arrWords);
+    objGame.arrAudios = randomWordsForSound;
+    playingArrOfSounds(words);
   }
 };
 
@@ -52,10 +64,12 @@ const addAnswers = (item: IWordsMongo) => {
   item.percent = (item.play / item.answers) * IN_INTEREST;
 };
 
-export const gameProcess = (elem: HTMLElement): void => {
+export const gameProcess = async (elem: HTMLElement): Promise<void> => {
+  const categoryName = cards[CATEGORY][store.getState().page - 1];
+  const words = await getWordsByCategory(categoryName);
   const image = elem as HTMLImageElement;
   if (objGame.arrAudios.length) {
-    const wordImage = getStringWord(image.src);
+    const wordImage = getStringWord(image.alt);
     const wordAudio = getStringWord(objGame.arrAudios[0]);
     if (wordImage === wordAudio) {
       sound(getSoundPath('correct'), IndexSounds.SECOND);
@@ -71,7 +85,8 @@ export const gameProcess = (elem: HTMLElement): void => {
       objGame.arrAudios.shift();
       if (objGame.arrAudios.length) {
         setTimeout(() => {
-          sound(objGame.arrAudios[0], IndexSounds.FIRST);
+          playingArrOfSounds(words)
+          // sound(objGame.arrAudios[0], IndexSounds.FIRST);
         }, DELAY_PLAY_SOUND);
       } else {
         renderFinish();
