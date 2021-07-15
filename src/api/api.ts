@@ -138,7 +138,7 @@ export async function getWords(): Promise<IWordsMongo[]> {
 }
 
 export async function getWordsByCategory(
-  categ: string
+  categ: string,
 ): Promise<IWordsMongo[]> {
   const response = await fetch(`${baseURL}/api/words/length/${categ}`, {
     method: 'GET',

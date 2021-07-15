@@ -85,7 +85,7 @@ export const gameProcess = async (elem: HTMLElement): Promise<void> => {
       objGame.arrAudios.shift();
       if (objGame.arrAudios.length) {
         setTimeout(() => {
-          playingArrOfSounds(words)
+          playingArrOfSounds(words);
           // sound(objGame.arrAudios[0], IndexSounds.FIRST);
         }, DELAY_PLAY_SOUND);
       } else {

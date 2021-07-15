@@ -12,12 +12,7 @@ import { renderRoot } from '../root/root';
 import { handlerMenu, handlerSideBar } from '../sidebar/handler';
 import { renderSidebar } from '../sidebar/sidebar';
 import { ElemClasses, Events } from '../utils/enums';
-import {
-  inputSwitcher,
-  label,
-  menu,
-  root,
-} from '../utils/get-elems';
+import { inputSwitcher, label, menu, root } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
 export const renderMain = async (): Promise<void> => {

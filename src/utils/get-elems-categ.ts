@@ -12,3 +12,6 @@ export const inputText = (): HTMLInputElement =>
 
 export const inputFile = (): HTMLInputElement =>
   document.querySelector('.categ-top-layer-image-input') as HTMLInputElement;
+
+export const getNewCardCateg = (): HTMLDivElement =>
+  document.querySelector('.categ-card-new') as HTMLDivElement;

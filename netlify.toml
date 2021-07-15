@@ -17,3 +17,8 @@
   from = "/categories"
   to = "/"
   status = 301
+
+[[redirects]]
+  from = "/admin"
+  to = "/"
+  status = 301

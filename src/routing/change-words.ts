@@ -1,72 +1,15 @@
-import {
-  getCategory,
-  getWordsByCategory,
-} from '../api/api';
+import { getCategory, getWordsByCategory } from '../api/api';
 import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { ElemClasses, Events, Tags } from '../utils/enums';
+import { getLoader } from '../utils/get-elems';
 import { selectTitle } from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
-const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
-  wrapper.innerHTML = '';
-
-  words.forEach((item: IWordsMongo) => {
-    if (typeof item === 'object') {
-      const card = document.createElement(Tags.DIV);
-      card.className = 'words-card';
-      card.id = `${item.word}`;
-      wrapper.append(card);
-
-      const word = document.createElement(Tags.P);
-      word.className = 'words-word';
-      word.innerHTML = `<span class="words-bold">Word:</span> ${item.word}`;
-      card.append(word);
-
-      const translation = document.createElement(Tags.P);
-      translation.className = 'words-translation';
-      translation.innerHTML = `
-        <span class="words-bold">
-          Translation:
-        </span> ${item.translation}
-      `;
-      card.append(translation);
-
-      const soundFile = document.createElement(Tags.P);
-      soundFile.className = 'words-sound';
-      soundFile.innerHTML = `
-        <span class="words-bold">
-          Sound file:
-        </span> ${item.audioSrc}
-        <span class="words-play-sound"></span>
-      `;
-      card.append(soundFile);
-
-      const imageTitle = document.createElement(Tags.P);
-      imageTitle.className = 'words-image-title';
-      imageTitle.innerHTML = '<span class="words-bold">Image:</span>';
-      card.append(imageTitle);
-
-      const image = document.createElement(Tags.IMG);
-      image.className = `words-image words-image-${item.word}`;
-      image.src = `${item.image}`;
-      image.alt = `${item.word}`;
-      card.append(image);
-
-      const btnChange = document.createElement(Tags.BUTTON);
-      btnChange.className = 'words-btn-change';
-      btnChange.innerHTML = 'Change';
-      card.append(btnChange);
-
-      const btnRemove = document.createElement(Tags.SPAN);
-      btnRemove.className = 'words-bnt-remove';
-      card.append(btnRemove);
-    }
-  });
-
+const renderNewCard = (wrapper: HTMLDivElement) => {
   const card = document.createElement(Tags.DIV);
   card.className = 'words-card words-card-new';
   wrapper.append(card);
@@ -75,10 +18,121 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   newWord.className = 'words-name words-name-new';
   newWord.innerHTML = `Add new word`;
   card.append(newWord);
+};
+
+const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
+  wrapper.innerHTML = '';
+
+  let start =
+    Math.ceil((document.documentElement.clientHeight - 151) / 400) *
+    Math.floor(document.documentElement.clientWidth / 280);
+  let mx = start;
+
+  window.addEventListener('scroll', () => {
+    if (
+      document.documentElement.scrollTop +
+        document.documentElement.clientHeight >=
+      document.documentElement.scrollHeight
+    ) {
+      console.log('mx', mx, 'words.length', words.length);
+      if (mx < words.length) {
+        getLoader().classList.remove('hidden');
+        setTimeout(() => {
+          getLoader().classList.add('hidden');
+          if (mx + mx <= words.length) {
+            mx += start;
+          } else {
+            mx = words.length;
+          }
+          // if (mx <= categories.length) {
+          rend(start, mx);
+          start += start;
+          // }
+        }, 2000);
+      }
+    }
+  });
+
+  const rend = (begin: number, end: number) => {
+    for (let i = begin; i < end; i++) {
+      if (typeof words[i] === 'object') {
+        const card = document.createElement(Tags.DIV);
+        card.className = 'words-card';
+        card.id = `${words[i].word}`;
+        wrapper.append(card);
+
+        const word = document.createElement(Tags.P);
+        word.className = 'words-word';
+        word.innerHTML = `
+            <span class="words-bold">
+            Word:
+            </span> ${words[i].word}
+          `;
+        card.append(word);
+
+        const translation = document.createElement(Tags.P);
+        translation.className = 'words-translation';
+        translation.innerHTML = `
+          <span class="words-bold">
+            Translation:
+          </span> ${words[i].translation}
+        `;
+        card.append(translation);
+
+        const soundFile = document.createElement(Tags.P);
+        soundFile.className = 'words-sound';
+        soundFile.innerHTML = `
+          <span class="words-bold">
+            Sound file:
+          </span> ${words[i].audioSrc}
+          <span class="words-play-sound"></span>
+        `;
+        card.append(soundFile);
+
+        const imageTitle = document.createElement(Tags.P);
+        imageTitle.className = 'words-image-title';
+        imageTitle.innerHTML = '<span class="words-bold">Image:</span>';
+        card.append(imageTitle);
+
+        const image = document.createElement(Tags.IMG);
+        image.className = `words-image words-image-${words[i].word}`;
+        image.src = `${words[i].image}`;
+        image.alt = `${words[i].word}`;
+        card.append(image);
+
+        const btnChange = document.createElement(Tags.BUTTON);
+        btnChange.className = 'words-btn-change';
+        btnChange.innerHTML = 'Change';
+        card.append(btnChange);
+
+        const btnRemove = document.createElement(Tags.SPAN);
+        btnRemove.className = 'words-bnt-remove';
+        card.append(btnRemove);
+      }
+    }
+
+    if (end >= words.length) {
+      console.log('end', end, 'words.length', words.length);
+      renderNewCard(wrapper);
+    }
+  };
+  rend(0, start);
 
   const audio1 = document.createElement(Tags.AUDIO);
   audio1.className = 'audio1';
-  card.append(audio1);
+  wrapper.append(audio1);
+
+  const NUMBER_CIRCLE = 3;
+
+  const loaderScroll = document.createElement(Tags.DIV);
+  loaderScroll.className = 'loader hidden';
+  wrapper.append(loaderScroll);
+
+  for (let i = 0; i < NUMBER_CIRCLE; i++) {
+    const circle = document.createElement(Tags.DIV);
+    circle.className = 'circle';
+    loaderScroll.append(circle);
+  }
 };
 
 const selectCategory = async (

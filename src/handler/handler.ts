@@ -17,18 +17,10 @@ import {
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { CATEGORY } from '../utils/consts';
-import {
-  ElemClasses,
-  Events,
-  IndexSounds,
-  StateApp,
-} from '../utils/enums';
+import { ElemClasses, Events, IndexSounds, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import { getWord } from '../utils/get-word';
-import {
-  IHTMLElems,
-  IWordsMongo,
-} from '../utils/interfaces';
+import { IHTMLElems, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 import { changeActiveLink } from './links-active';
 

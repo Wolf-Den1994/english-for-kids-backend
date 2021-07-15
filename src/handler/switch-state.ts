@@ -10,10 +10,7 @@ import { addClassList } from '../utils/add-class';
 import { changeClassList } from '../utils/change-class';
 import { ElemClasses, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
-import {
-  IHTMLElems,
-  IWordsMongo,
-} from '../utils/interfaces';
+import { IHTMLElems, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const isPageCategory = (): boolean =>
