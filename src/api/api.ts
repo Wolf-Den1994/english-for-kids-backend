@@ -1,7 +1,7 @@
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
-const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
-// const baseURL = 'http://localhost';
+// const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+const baseURL = 'http://localhost';
 
 export async function getCards(url: string): Promise<any> {
   // tickets.length = 0;
