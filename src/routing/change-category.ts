@@ -1,6 +1,7 @@
 import { getWordsByCategory, getCategory } from '../api/api';
 import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
+import { addClassList } from '../utils/add-class';
 import { ElemClasses, Tags } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
@@ -115,9 +116,12 @@ export const renderCategPage = async (): Promise<void> => {
           //   document.documentElement.scrollHeight
           // ) {
           console.log('start', start, 'mx', mx);
-          if (counterObserver === start) {
+          console.log(counterObserver + 1, start)
+          if (counterObserver + 1  === start) {
             console.log('mx', mx, 'categories.length', categories.length);
             if (mx < categories.length) {
+              addClassList(document.body, 'hidden')
+
               getLoader().classList.remove('hidden');
               setTimeout(() => {
                 getLoader().classList.add('hidden');
@@ -133,20 +137,21 @@ export const renderCategPage = async (): Promise<void> => {
               }, 2000);
             }
             setTimeout(() => {
+              removeClassList(document.body, 'hidden')
               cards = document.querySelectorAll('.categ-card');
               console.log(cards.length);
               cards.forEach((card) => {
                 observ.observe(card);
                 console.log('card count');
               });
-            }, 3000);
+            }, 2150);
           }
           // }
           observ.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.9 },
+    { threshold: 0.1 },
   );
 
   cards.forEach((card) => {

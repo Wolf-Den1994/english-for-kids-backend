@@ -3,6 +3,7 @@ import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
+import { addClassList } from '../utils/add-class';
 import { ElemClasses, Events, Tags } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
 import { selectTitle } from '../utils/get-elems-words';
@@ -104,8 +105,8 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         counterObserver++
-        if (counterObserver === start) {
-
+        console.log(counterObserver + 1, start)
+        if (counterObserver + 1  === start) {
           // if (
           //   document.documentElement.scrollTop +
           //     document.documentElement.clientHeight >=
@@ -113,6 +114,8 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
           // ) {
           // console.log('mx', mx, 'words.length', words.length);
           if (mx < words.length) {
+            addClassList(document.body, 'hidden')
+
             getLoader().classList.remove('hidden');
             setTimeout(() => {
               getLoader().classList.add('hidden');
@@ -128,20 +131,21 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
             }, 2000);
           }
           setTimeout(() => {
+            removeClassList(document.body, 'hidden')
             cards = document.querySelectorAll('.words-card');
             console.log(cards.length);
             cards.forEach((card) => {
               observ.observe(card);
               console.log('card count');
             });
-          }, 3000)
+          }, 2150)
           // }
         }
         observ.unobserve(entry.target);
       }
     })
   }, 
-  { threshold: 0.9 }
+  { threshold: 0.5 }
   )
 
   cards.forEach((card) => {
