@@ -1,3 +1,4 @@
+import './alert';
 import './styles.scss';
 import './routing/routes';
 import './control/obj-statistic';
