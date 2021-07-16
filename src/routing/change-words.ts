@@ -4,6 +4,7 @@ import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
+import { checkClass } from '../utils/check-class';
 import { ElemClasses, Events, Tags } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
 import { selectTitle } from '../utils/get-elems-words';
@@ -30,7 +31,7 @@ const rend = (
   for (let i = begin; i < end; i++) {
     if (typeof words[i] === 'object') {
       const card = document.createElement(Tags.DIV);
-      card.className = 'words-card';
+      card.className = 'words-card observ';
       card.id = `${words[i].word}`;
       wrapper.append(card);
 
@@ -103,7 +104,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
 
   rend(0, start, words, wrapper);
 
-  let cards = document.querySelectorAll('.words-card');
+  let cards = [...document.querySelectorAll('.words-card')] as HTMLElement[];
 
   const observer = new IntersectionObserver(
     (entries, observ) => {
@@ -129,10 +130,14 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
             }
             setTimeout(() => {
               removeClassList(document.body, 'hidden');
-              cards = document.querySelectorAll('.words-card');
+              cards = [
+                ...document.querySelectorAll('.words-card'),
+              ] as HTMLElement[];
               // console.log(cards.length);
               cards.forEach((card) => {
-                observ.observe(card);
+                if (checkClass(card, 'observ')) {
+                  observer.observe(card);
+                }
                 // console.log('card count');
               });
             }, 2150);
@@ -141,11 +146,13 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
         }
       });
     },
-    { threshold: 0.5 },
+    { threshold: 1 },
   );
 
   cards.forEach((card) => {
-    observer.observe(card);
+    if (checkClass(card, 'observ')) {
+      observer.observe(card);
+    }
     // console.log('card count');
   });
 

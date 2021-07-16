@@ -2,6 +2,7 @@ import { getWordsByCategory, getCategory } from '../api/api';
 import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
 import { addClassList } from '../utils/add-class';
+import { checkClass } from '../utils/check-class';
 import { ElemClasses, Tags } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
@@ -30,7 +31,7 @@ const rend = (
   // console.log(begin, end);
   for (let i = begin; i < end; i++) {
     const card = document.createElement(Tags.DIV);
-    card.className = 'categ-card';
+    card.className = 'categ-card observ';
     card.id = `${categories[i].categoryName}`;
     main.append(card);
 
@@ -98,7 +99,7 @@ export const renderCategPage = async (): Promise<void> => {
 
   rend(0, start, categories, main, arrWordsInCategory);
 
-  let cards = document.querySelectorAll('.categ-card');
+  let cards = [...document.querySelectorAll('.categ-card')] as HTMLElement[];
 
   const observer = new IntersectionObserver(
     (entries, observ) => {
@@ -106,9 +107,10 @@ export const renderCategPage = async (): Promise<void> => {
         // console.log('entries count');
         if (entry.isIntersecting) {
           counterObserver++;
+          removeClassList(entry.target, 'observ');
           // console.log('entry isIntersecting');
           // console.log('start', start, 'mx', mx);
-          // console.log(counterObserver + 1, start)
+          // console.log(counterObserver + 1, start);
           if (counterObserver + 1 === start) {
             // console.log('mx', mx, 'categories.length', categories.length);
             if (mx < categories.length) {
@@ -128,10 +130,14 @@ export const renderCategPage = async (): Promise<void> => {
             }
             setTimeout(() => {
               removeClassList(document.body, 'hidden');
-              cards = document.querySelectorAll('.categ-card');
+              cards = [
+                ...document.querySelectorAll('.categ-card'),
+              ] as HTMLElement[];
               // console.log(cards.length);
               cards.forEach((card) => {
-                observ.observe(card);
+                if (checkClass(card, 'observ')) {
+                  observer.observe(card);
+                }
                 // console.log('card count');
               });
             }, 2150);
@@ -141,12 +147,13 @@ export const renderCategPage = async (): Promise<void> => {
         }
       });
     },
-    { threshold: 0.1 },
+    { threshold: 1 },
   );
 
   cards.forEach((card) => {
-    observer.observe(card);
-    // console.log('card count');
+    if (checkClass(card, 'observ')) {
+      observer.observe(card);
+    }
   });
 
   const NUMBER_CIRCLE = 3;
