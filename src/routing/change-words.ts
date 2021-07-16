@@ -34,7 +34,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
         document.documentElement.clientHeight >=
       document.documentElement.scrollHeight
     ) {
-      console.log('mx', mx, 'words.length', words.length);
+      // console.log('mx', mx, 'words.length', words.length);
       if (mx < words.length) {
         getLoader().classList.remove('hidden');
         setTimeout(() => {
@@ -112,7 +112,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
     }
 
     if (end >= words.length) {
-      console.log('end', end, 'words.length', words.length);
+      // console.log('end', end, 'words.length', words.length);
       renderNewCard(wrapper);
     }
   };

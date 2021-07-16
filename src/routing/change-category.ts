@@ -45,7 +45,7 @@ export const renderCategPage = async (): Promise<void> => {
         document.documentElement.clientHeight >=
       document.documentElement.scrollHeight
     ) {
-      console.log('mx', mx, 'categories.length', categories.length);
+      // console.log('mx', mx, 'categories.length', categories.length);
       if (mx < categories.length) {
         getLoader().classList.remove('hidden');
         setTimeout(() => {
@@ -65,7 +65,7 @@ export const renderCategPage = async (): Promise<void> => {
   });
 
   const rend = (begin: number, end: number) => {
-    console.log(begin, end);
+    // console.log(begin, end);
     for (let i = begin; i < end; i++) {
       const card = document.createElement(Tags.DIV);
       card.className = 'categ-card';
@@ -105,7 +105,7 @@ export const renderCategPage = async (): Promise<void> => {
     }
 
     if (end >= categories.length) {
-      console.log('end', end, 'categories.length', categories.length);
+      // console.log('end', end, 'categories.length', categories.length);
       renderNewCard(main);
     }
   };
