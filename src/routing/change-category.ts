@@ -102,8 +102,8 @@ export const renderCategPage = async (): Promise<void> => {
 
   let cards = document.querySelectorAll('.categ-card');
 
-  let observer = new IntersectionObserver(
-    (entries, observer) => {
+  const observer = new IntersectionObserver(
+    (entries, observ) => {
       entries.forEach((entry) => {
         console.log('entries count');
         if (entry.isIntersecting) {
@@ -136,13 +136,13 @@ export const renderCategPage = async (): Promise<void> => {
               cards = document.querySelectorAll('.categ-card');
               console.log(cards.length);
               cards.forEach((card) => {
-                observer.observe(card);
+                observ.observe(card);
                 console.log('card count');
               });
             }, 3000);
           }
           // }
-          observer.unobserve(entry.target);
+          observ.unobserve(entry.target);
         }
       });
     },

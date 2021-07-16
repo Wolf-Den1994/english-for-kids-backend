@@ -62,10 +62,11 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    flex-direction: column;
 
     .words-card {
       position: relative;
-      margin: 10px;
+      margin: 10px auto 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-around;

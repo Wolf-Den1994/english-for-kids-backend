@@ -20,6 +20,70 @@ const renderNewCard = (wrapper: HTMLDivElement) => {
   card.append(newWord);
 };
 
+const rend = (begin: number, end: number, words: IWordsMongo[], wrapper: HTMLDivElement) => {
+  for (let i = begin; i < end; i++) {
+    if (typeof words[i] === 'object') {
+      const card = document.createElement(Tags.DIV);
+      card.className = 'words-card';
+      card.id = `${words[i].word}`;
+      wrapper.append(card);
+
+      const word = document.createElement(Tags.P);
+      word.className = 'words-word';
+      word.innerHTML = `
+          <span class="words-bold">
+          Word:
+          </span> ${words[i].word}
+        `;
+      card.append(word);
+
+      const translation = document.createElement(Tags.P);
+      translation.className = 'words-translation';
+      translation.innerHTML = `
+        <span class="words-bold">
+          Translation:
+        </span> ${words[i].translation}
+      `;
+      card.append(translation);
+
+      const soundFile = document.createElement(Tags.P);
+      soundFile.className = 'words-sound';
+      soundFile.innerHTML = `
+        <span class="words-bold">
+          Sound file:
+        </span> ${words[i].audioSrc}
+        <span class="words-play-sound"></span>
+      `;
+      card.append(soundFile);
+
+      const imageTitle = document.createElement(Tags.P);
+      imageTitle.className = 'words-image-title';
+      imageTitle.innerHTML = '<span class="words-bold">Image:</span>';
+      card.append(imageTitle);
+
+      const image = document.createElement(Tags.IMG);
+      image.className = `words-image words-image-${words[i].word}`;
+      image.src = `${words[i].image}`;
+      image.alt = `${words[i].word}`;
+      card.append(image);
+
+      const btnChange = document.createElement(Tags.BUTTON);
+      btnChange.className = 'words-btn-change';
+      btnChange.innerHTML = 'Change';
+      card.append(btnChange);
+
+      const btnRemove = document.createElement(Tags.SPAN);
+      btnRemove.className = 'words-bnt-remove';
+      card.append(btnRemove);
+    }
+  }
+
+  if (end >= words.length) {
+    // console.log('end', end, 'words.length', words.length);
+    renderNewCard(wrapper);
+  }
+};
+
 const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   wrapper.innerHTML = '';
 
@@ -28,95 +92,62 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
     Math.floor(document.documentElement.clientWidth / 280);
   let mx = start;
 
-  window.addEventListener('scroll', () => {
-    if (
-      document.documentElement.scrollTop +
-        document.documentElement.clientHeight >=
-      document.documentElement.scrollHeight
-    ) {
-      // console.log('mx', mx, 'words.length', words.length);
-      if (mx < words.length) {
-        getLoader().classList.remove('hidden');
-        setTimeout(() => {
-          getLoader().classList.add('hidden');
-          if (mx + mx <= words.length) {
-            mx += start;
-          } else {
-            mx = words.length;
+  // window.addEventListener('scroll', () => {});
+
+  let counterObserver = 0;
+  
+  rend(0, start, words, wrapper);
+
+  let cards = document.querySelectorAll('.words-card')
+
+  const observer = new IntersectionObserver((entries, observ) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        counterObserver++
+        if (counterObserver === start) {
+
+          // if (
+          //   document.documentElement.scrollTop +
+          //     document.documentElement.clientHeight >=
+          //   document.documentElement.scrollHeight
+          // ) {
+          // console.log('mx', mx, 'words.length', words.length);
+          if (mx < words.length) {
+            getLoader().classList.remove('hidden');
+            setTimeout(() => {
+              getLoader().classList.add('hidden');
+              if (mx + mx <= words.length) {
+                mx += start;
+              } else {
+                mx = words.length;
+              }
+              // if (mx <= categories.length) {
+              rend(start, mx, words, wrapper);
+              start += start;
+              // }
+            }, 2000);
           }
-          // if (mx <= categories.length) {
-          rend(start, mx);
-          start += start;
+          setTimeout(() => {
+            cards = document.querySelectorAll('.words-card');
+            console.log(cards.length);
+            cards.forEach((card) => {
+              observ.observe(card);
+              console.log('card count');
+            });
+          }, 3000)
           // }
-        }, 2000);
+        }
+        observ.unobserve(entry.target);
       }
-    }
+    })
+  }, 
+  { threshold: 0.9 }
+  )
+
+  cards.forEach((card) => {
+    observer.observe(card);
+    console.log('card count');
   });
-
-  const rend = (begin: number, end: number) => {
-    for (let i = begin; i < end; i++) {
-      if (typeof words[i] === 'object') {
-        const card = document.createElement(Tags.DIV);
-        card.className = 'words-card';
-        card.id = `${words[i].word}`;
-        wrapper.append(card);
-
-        const word = document.createElement(Tags.P);
-        word.className = 'words-word';
-        word.innerHTML = `
-            <span class="words-bold">
-            Word:
-            </span> ${words[i].word}
-          `;
-        card.append(word);
-
-        const translation = document.createElement(Tags.P);
-        translation.className = 'words-translation';
-        translation.innerHTML = `
-          <span class="words-bold">
-            Translation:
-          </span> ${words[i].translation}
-        `;
-        card.append(translation);
-
-        const soundFile = document.createElement(Tags.P);
-        soundFile.className = 'words-sound';
-        soundFile.innerHTML = `
-          <span class="words-bold">
-            Sound file:
-          </span> ${words[i].audioSrc}
-          <span class="words-play-sound"></span>
-        `;
-        card.append(soundFile);
-
-        const imageTitle = document.createElement(Tags.P);
-        imageTitle.className = 'words-image-title';
-        imageTitle.innerHTML = '<span class="words-bold">Image:</span>';
-        card.append(imageTitle);
-
-        const image = document.createElement(Tags.IMG);
-        image.className = `words-image words-image-${words[i].word}`;
-        image.src = `${words[i].image}`;
-        image.alt = `${words[i].word}`;
-        card.append(image);
-
-        const btnChange = document.createElement(Tags.BUTTON);
-        btnChange.className = 'words-btn-change';
-        btnChange.innerHTML = 'Change';
-        card.append(btnChange);
-
-        const btnRemove = document.createElement(Tags.SPAN);
-        btnRemove.className = 'words-bnt-remove';
-        card.append(btnRemove);
-      }
-    }
-
-    if (end >= words.length) {
-      // console.log('end', end, 'words.length', words.length);
-      renderNewCard(wrapper);
-    }
-  };
-  rend(0, start);
 
   const audio1 = document.createElement(Tags.AUDIO);
   audio1.className = 'audio1';
