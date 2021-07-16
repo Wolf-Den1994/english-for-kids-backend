@@ -11,11 +11,14 @@ import { renderOverlay } from '../overlay/overlay';
 import { renderRoot } from '../root/root';
 import { handlerMenu, handlerSideBar } from '../sidebar/handler';
 import { renderSidebar } from '../sidebar/sidebar';
+import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { ElemClasses, Events } from '../utils/enums';
 import { inputSwitcher, label, menu, root } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
 export const renderMain = async (): Promise<void> => {
+  const checkUser = localStorage.getItem(LOCAL_STORAGE_USER_ADMIN);
+  if (checkUser) localStorage.removeItem(LOCAL_STORAGE_USER_ADMIN);
   renderHeader();
   renderBtnSidebar();
   renderSwitcher();

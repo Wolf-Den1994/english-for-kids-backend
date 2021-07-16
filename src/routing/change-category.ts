@@ -88,16 +88,13 @@ export const renderCategPage = async (): Promise<void> => {
   const arrWordsInCategory = await Promise.all(arrWordsOnCategory);
   // console.log(arrWordsOnCategory)
 
-  let start =
-    Math.ceil((document.documentElement.clientHeight - 71) / 300) *
-    Math.floor(document.documentElement.clientWidth / 280);
+  let start = Math.ceil((document.documentElement.clientHeight - 71) / 300) + 4;
   let mx = start;
 
-  console.log('1');
+  // console.log(start);
+  // console.log(document.documentElement.clientHeight);
 
   let counterObserver = 0;
-
-  // window.addEventListener('scroll', () => );
 
   rend(0, start, categories, main, arrWordsInCategory);
 
@@ -106,21 +103,16 @@ export const renderCategPage = async (): Promise<void> => {
   const observer = new IntersectionObserver(
     (entries, observ) => {
       entries.forEach((entry) => {
-        console.log('entries count');
+        // console.log('entries count');
         if (entry.isIntersecting) {
           counterObserver++;
-          console.log('entry isIntersecting');
-          // if (
-          //   document.documentElement.scrollTop +
-          //     document.documentElement.clientHeight >=
-          //   document.documentElement.scrollHeight
-          // ) {
-          console.log('start', start, 'mx', mx);
-          console.log(counterObserver + 1, start)
-          if (counterObserver + 1  === start) {
-            console.log('mx', mx, 'categories.length', categories.length);
+          // console.log('entry isIntersecting');
+          // console.log('start', start, 'mx', mx);
+          // console.log(counterObserver + 1, start)
+          if (counterObserver + 1 === start) {
+            // console.log('mx', mx, 'categories.length', categories.length);
             if (mx < categories.length) {
-              addClassList(document.body, 'hidden')
+              addClassList(document.body, 'hidden');
 
               getLoader().classList.remove('hidden');
               setTimeout(() => {
@@ -130,19 +122,17 @@ export const renderCategPage = async (): Promise<void> => {
                 } else {
                   mx = categories.length;
                 }
-                // if (mx <= categories.length) {
                 rend(start, mx, categories, main, arrWordsInCategory);
                 start += start;
-                // }
               }, 2000);
             }
             setTimeout(() => {
-              removeClassList(document.body, 'hidden')
+              removeClassList(document.body, 'hidden');
               cards = document.querySelectorAll('.categ-card');
-              console.log(cards.length);
+              // console.log(cards.length);
               cards.forEach((card) => {
                 observ.observe(card);
-                console.log('card count');
+                // console.log('card count');
               });
             }, 2150);
           }
@@ -156,7 +146,7 @@ export const renderCategPage = async (): Promise<void> => {
 
   cards.forEach((card) => {
     observer.observe(card);
-    console.log('card count');
+    // console.log('card count');
   });
 
   const NUMBER_CIRCLE = 3;

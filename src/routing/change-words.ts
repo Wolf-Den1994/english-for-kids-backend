@@ -21,7 +21,12 @@ const renderNewCard = (wrapper: HTMLDivElement) => {
   card.append(newWord);
 };
 
-const rend = (begin: number, end: number, words: IWordsMongo[], wrapper: HTMLDivElement) => {
+const rend = (
+  begin: number,
+  end: number,
+  words: IWordsMongo[],
+  wrapper: HTMLDivElement,
+) => {
   for (let i = begin; i < end; i++) {
     if (typeof words[i] === 'object') {
       const card = document.createElement(Tags.DIV);
@@ -89,68 +94,59 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   wrapper.innerHTML = '';
 
   let start =
-    Math.ceil((document.documentElement.clientHeight - 151) / 400) *
-    Math.floor(document.documentElement.clientWidth / 280);
+    Math.ceil((document.documentElement.clientHeight - 151) / 400) + 4;
   let mx = start;
 
   // window.addEventListener('scroll', () => {});
 
   let counterObserver = 0;
-  
+
   rend(0, start, words, wrapper);
 
-  let cards = document.querySelectorAll('.words-card')
+  let cards = document.querySelectorAll('.words-card');
 
-  const observer = new IntersectionObserver((entries, observ) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        counterObserver++
-        console.log(counterObserver + 1, start)
-        if (counterObserver + 1  === start) {
-          // if (
-          //   document.documentElement.scrollTop +
-          //     document.documentElement.clientHeight >=
-          //   document.documentElement.scrollHeight
-          // ) {
-          // console.log('mx', mx, 'words.length', words.length);
-          if (mx < words.length) {
-            addClassList(document.body, 'hidden')
+  const observer = new IntersectionObserver(
+    (entries, observ) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          counterObserver++;
+          // console.log(counterObserver + 1, start)
+          if (counterObserver + 1 === start) {
+            if (mx < words.length) {
+              addClassList(document.body, 'hidden');
 
-            getLoader().classList.remove('hidden');
+              getLoader().classList.remove('hidden');
+              setTimeout(() => {
+                getLoader().classList.add('hidden');
+                if (mx + mx <= words.length) {
+                  mx += start;
+                } else {
+                  mx = words.length;
+                }
+                rend(start, mx, words, wrapper);
+                start += start;
+              }, 2000);
+            }
             setTimeout(() => {
-              getLoader().classList.add('hidden');
-              if (mx + mx <= words.length) {
-                mx += start;
-              } else {
-                mx = words.length;
-              }
-              // if (mx <= categories.length) {
-              rend(start, mx, words, wrapper);
-              start += start;
-              // }
-            }, 2000);
+              removeClassList(document.body, 'hidden');
+              cards = document.querySelectorAll('.words-card');
+              // console.log(cards.length);
+              cards.forEach((card) => {
+                observ.observe(card);
+                // console.log('card count');
+              });
+            }, 2150);
           }
-          setTimeout(() => {
-            removeClassList(document.body, 'hidden')
-            cards = document.querySelectorAll('.words-card');
-            console.log(cards.length);
-            cards.forEach((card) => {
-              observ.observe(card);
-              console.log('card count');
-            });
-          }, 2150)
-          // }
+          observ.unobserve(entry.target);
         }
-        observ.unobserve(entry.target);
-      }
-    })
-  }, 
-  { threshold: 0.5 }
-  )
+      });
+    },
+    { threshold: 0.5 },
+  );
 
   cards.forEach((card) => {
     observer.observe(card);
-    console.log('card count');
+    // console.log('card count');
   });
 
   const audio1 = document.createElement(Tags.AUDIO);
