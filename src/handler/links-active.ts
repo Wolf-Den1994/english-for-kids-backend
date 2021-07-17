@@ -1,3 +1,4 @@
+import { hiddenStatistic } from '../main-page/render-main';
 import { links } from '../sidebar/sidebar';
 import { addClassList } from '../utils/add-class';
 import { ElemClasses } from '../utils/enums';
@@ -14,4 +15,5 @@ export const changeActiveLink = (newActiveLink: HTMLElement | number): void => {
   } else {
     addClassList(newActiveLink, ElemClasses.ACTIVE);
   }
+  hiddenStatistic();
 };

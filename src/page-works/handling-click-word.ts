@@ -1,6 +1,7 @@
 import { createWord, deleteWord, putWordByName } from '../api/api';
 import { sound } from '../play/sound';
 import { onNavigate } from '../routing/routes';
+import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { Events, IndexSounds, Tags } from '../utils/enums';
@@ -154,14 +155,25 @@ const addWord = async () => {
     formData.set('sound', soundFile);
     formData.set('image', imageFile);
 
-    await createWord(formData);
-    onNavigate('/words');
+    const response = await createWord(formData, getInputWord().value);
+    // console.log(response)
+    if (response === 'duplicate') {
+      getInputWord().value = 'duplicate';
+      addClassList(getInputWord(), 'duplicate');
+    } else {
+      removeClassList(getInputWord(), 'duplicate');
+      if (response) {
+        onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+      }
+    }
   }
 };
 
 const deleteWordByName = async (card: HTMLDivElement) => {
-  await deleteWord(card.id);
-  onNavigate('/words');
+  const response = await deleteWord(card.id);
+  if (response) {
+    onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+  }
 };
 
 const updateCategoryName = async (card: HTMLDivElement) => {
@@ -188,8 +200,10 @@ const updateCategoryName = async (card: HTMLDivElement) => {
     formData.set('sound', soundFile);
     formData.set('image', imageFile);
 
-    await putWordByName(formData, card.id);
-    onNavigate('/words');
+    const response = await putWordByName(formData, card.id);
+    if (response) {
+      onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+    }
   }
 };
 

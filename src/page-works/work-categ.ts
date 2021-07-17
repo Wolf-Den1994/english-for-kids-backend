@@ -1,4 +1,5 @@
 import { onNavigate } from '../routing/routes';
+import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { Events } from '../utils/enums';
@@ -18,7 +19,7 @@ export const rederectOnCategPage = (): void => {
 
 export const rederectOnWordsPage = (): void => {
   document.body.innerHTML = '';
-  onNavigate('/words');
+  onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
 };
 
 const addListeners = () => {

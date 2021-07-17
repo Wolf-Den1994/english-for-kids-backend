@@ -142,3 +142,13 @@ body {
     }
   }
 }
+
+.duplicate {
+  background-color: rgb(245, 205, 30);
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}

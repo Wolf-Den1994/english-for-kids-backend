@@ -1,7 +1,15 @@
+import { onNavigate } from '../routing/routes';
+import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
 const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 // const baseURL = 'http://localhost';
+
+async function checkAuthReponse(response: Response) {
+  if (response.status === 401) {
+    onNavigate('/');
+  }
+}
 
 export async function getCards(url: string): Promise<any> {
   // tickets.length = 0;
@@ -10,6 +18,7 @@ export async function getCards(url: string): Promise<any> {
     method: 'GET',
     headers: { Accept: 'application/json' },
   });
+  checkAuthReponse(response);
   // если запрос прошел нормально
   const cards = await response.json();
   return cards;
@@ -86,11 +95,21 @@ export async function getCategoryByName(name: string): Promise<any> {
   return category;
 }
 
-export async function createCategory(formData: FormData): Promise<any> {
-  const response = await fetch(`${baseURL}/api/category/`, {
+export async function createCategory(
+  formData: FormData,
+  name: string,
+): Promise<any> {
+  const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'POST',
+    headers: {
+      Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
+    },
     body: formData,
   });
+  checkAuthReponse(response);
+  if (response.status === 400) {
+    return 'duplicate';
+  }
   const category = await response.json();
   return category;
 }
@@ -101,8 +120,12 @@ export async function putCategoryByName(
 ): Promise<string | null> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'PUT',
+    headers: {
+      Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
+    },
     body: formData,
   });
+  checkAuthReponse(response);
   if (response.ok === true) {
     const card = await response.json();
     // eslint-disable-next-line no-console
@@ -115,8 +138,12 @@ export async function putCategoryByName(
 export async function deleteCategory(name: string): Promise<any> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'DELETE',
-    headers: { Accept: 'application/json' },
+    headers: {
+      Accept: 'application/json',
+      Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
+    },
   });
+  checkAuthReponse(response);
   if (response.ok === true) {
     const category = await response.json();
     // eslint-disable-next-line no-console
@@ -150,11 +177,21 @@ export async function getWordsByCategory(
   return categLength;
 }
 
-export async function createWord(formData: FormData): Promise<any> {
-  const response = await fetch(`${baseURL}/api/word/`, {
+export async function createWord(
+  formData: FormData,
+  name: string,
+): Promise<any> {
+  const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'POST',
+    headers: {
+      Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
+    },
     body: formData,
   });
+  checkAuthReponse(response);
+  if (response.status === 400) {
+    return 'duplicate';
+  }
   const word = await response.json();
   // console.log(word);
   return word;
@@ -163,8 +200,12 @@ export async function createWord(formData: FormData): Promise<any> {
 export async function deleteWord(name: string): Promise<any> {
   const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'DELETE',
-    headers: { Accept: 'application/json' },
+    headers: {
+      Accept: 'application/json',
+      Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
+    },
   });
+  checkAuthReponse(response);
   if (response.ok === true) {
     const word = await response.json();
     // eslint-disable-next-line no-console
@@ -180,8 +221,12 @@ export async function putWordByName(
 ): Promise<string | null> {
   const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'PUT',
+    headers: {
+      Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
+    },
     body: formData,
   });
+  checkAuthReponse(response);
   if (response.ok === true) {
     const card = await response.json();
     // eslint-disable-next-line no-console

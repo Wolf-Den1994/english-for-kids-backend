@@ -75,15 +75,19 @@ const updateCategoryName = async (card: HTMLElement) => {
     formData.set('name', inputText().value);
     formData.set('image', imageFile);
 
-    await putCategoryByName(formData, card.id);
-    onNavigate('/category');
+    const response = await putCategoryByName(formData, card.id);
+    if (response) {
+      onNavigate('/category');
+    }
   }
   // }
 };
 
 const deleteCategoryByName = async (card: HTMLElement) => {
-  await deleteCategory(card.id);
-  onNavigate('/category');
+  const response = await deleteCategory(card.id);
+  if (response) {
+    onNavigate('/category');
+  }
 };
 
 const createCategori = async () => {
@@ -97,8 +101,16 @@ const createCategori = async () => {
 
     formData.set('name', inputText().value);
     formData.set('image', imageFile);
-    await createCategory(formData);
-    onNavigate('/category');
+    const response = await createCategory(formData, inputText().value);
+    if (response === 'duplicate') {
+      inputText().value = 'duplicate';
+      addClassList(inputText(), 'duplicate');
+    } else {
+      removeClassList(inputFile(), 'duplicate');
+      if (response) {
+        onNavigate('/category');
+      }
+    }
   }
 };
 
@@ -110,7 +122,7 @@ const handlerClickPageCategory = (cards: ICategoriesMongo[], event: Event) => {
     // const index = cards[CATEGORY].indexOf(idCard);
     if (checkClass(target, 'categ-bnt-add')) {
       store.dispatch(changeAdminCategory(`${idCard}`));
-      onNavigate('/words');
+      onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
     } else if (checkClass(target, 'categ-bnt-update')) {
       renderTopLayer(card, 'update');
       // cards[CATEGORY].map(item => item = item === idCard ? idCard : item)

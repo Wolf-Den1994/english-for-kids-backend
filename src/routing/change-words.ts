@@ -10,8 +10,9 @@ import { getLoader } from '../utils/get-elems';
 import { selectTitle } from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { onNavigate } from './routes';
 
-const renderNewCard = (wrapper: HTMLDivElement) => {
+const renderNewCard = (wrapper: HTMLDivElement): void => {
   const card = document.createElement(Tags.DIV);
   card.className = 'words-card words-card-new';
   wrapper.append(card);
@@ -190,6 +191,7 @@ const selectCategory = async (
 
   // const index = words[CATEGORY].indexOf(target.value);
   store.dispatch(changeAdminCategory(target.value));
+  onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
   const newWords = await getWordsByCategory(store.getState().admCateg);
 
   pointThisWords(newWords, wrapper);
@@ -198,6 +200,7 @@ const selectCategory = async (
 export const changeWords = `${head('words')}`;
 
 export const renderWordsPage = async (): Promise<void> => {
+  // console.log(store.getState().admCateg);
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   // const cards = await getCards('/api/cards');
