@@ -25,5 +25,6 @@ export const renderFooter = (): void => {
 
   const year = document.createElement(Tags.SPAN);
   year.className = 'rss-year';
+  year.innerHTML = '21';
   linkRSS.append(year);
 };
