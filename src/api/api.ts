@@ -3,74 +3,11 @@ import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
 const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
-// const baseURL = 'http://localhost';
 
 async function checkAuthReponse(response: Response) {
   if (response.status === 401) {
     onNavigate('/');
   }
-}
-
-export async function getCards(url: string): Promise<any> {
-  // tickets.length = 0;
-  // отправляет запрос и получаем ответ
-  const response = await fetch(`${baseURL}${url}`, {
-    method: 'GET',
-    headers: { Accept: 'application/json' },
-  });
-  checkAuthReponse(response);
-  // если запрос прошел нормально
-  const cards = await response.json();
-  return cards;
-}
-
-interface IDataPut {
-  oldName: string;
-  newName: string;
-}
-
-export async function putCards(data: IDataPut): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/cards`, {
-    method: 'PUT',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (response.ok === true) {
-    const card = await response.text();
-    // eslint-disable-next-line no-console
-    // console.log(card);
-    return card;
-  }
-  return null;
-}
-
-export async function deleteCards(id: string): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/cards/${id}`, {
-    method: 'DELETE',
-    headers: { Accept: 'application/json' },
-  });
-  if (response.ok === true) {
-    const card = await response.text();
-    // eslint-disable-next-line no-console
-    // console.log(card);
-    return card;
-  }
-  return null;
-}
-
-export async function createCards(newCategory: string): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/cards/`, {
-    method: 'POST',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ newCategory }),
-  });
-  if (response.ok === true) {
-    const card = await response.text();
-    // eslint-disable-next-line no-console
-    // console.log(card);
-    return card;
-  }
-  return null;
 }
 
 export async function getCategory(): Promise<ICategoriesMongo[]> {

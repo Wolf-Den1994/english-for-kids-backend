@@ -126,7 +126,7 @@ export const renderCategPage = async (): Promise<void> => {
                 }
                 rend(start, mx, categories, main, arrWordsInCategory);
                 start += start;
-              }, 2000);
+              }, 500);
             }
             setTimeout(() => {
               removeClassList(document.body, 'hidden');
@@ -140,7 +140,7 @@ export const renderCategPage = async (): Promise<void> => {
                 }
                 // console.log('card count');
               });
-            }, 2150);
+            }, 650);
           }
           // }
           observ.unobserve(entry.target);

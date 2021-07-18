@@ -127,7 +127,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
                 }
                 rend(start, mx, words, wrapper);
                 start += start;
-              }, 2000);
+              }, 500);
             }
             setTimeout(() => {
               removeClassList(document.body, 'hidden');
@@ -141,7 +141,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
                 }
                 // console.log('card count');
               });
-            }, 2150);
+            }, 650);
           }
           observ.unobserve(entry.target);
         }
