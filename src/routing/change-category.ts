@@ -1,16 +1,20 @@
 import { getWordsByCategory, getCategory } from '../api/api';
 import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
-import { addClassList } from '../utils/add-class';
-import { checkClass } from '../utils/check-class';
-import { ElemClasses, Tags } from '../utils/enums';
-import { getLoader } from '../utils/get-elems';
+import { ElemClasses, LayoutPages, Tags } from '../utils/enums';
+import { getMainCateg } from '../utils/get-elems-categ';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateCardArray } from '../utils/update-card-arr';
+import { loader } from './loader';
+import { observerPage } from './observer';
 
 export const changeCategory = `${head('categ')}`;
+const heightHeader = 71;
+const heightCard = 300;
+const correctionCoefficient = 4;
 
-const renderNewCard = (main: HTMLElement) => {
+const renderNewCard = (main: HTMLElement): void => {
   const newCard = document.createElement(Tags.DIV);
   newCard.className = 'categ-card categ-card-new';
   main.append(newCard);
@@ -21,14 +25,13 @@ const renderNewCard = (main: HTMLElement) => {
   newCard.append(name);
 };
 
-const rend = (
+const renderCategory = (
   begin: number,
   end: number,
   categories: ICategoriesMongo[],
   main: HTMLElement,
   arrWordsInCategory: IWordsMongo[][],
-) => {
-  // console.log(begin, end);
+): void => {
   for (let i = begin; i < end; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'categ-card observ';
@@ -68,7 +71,6 @@ const rend = (
   }
 
   if (end >= categories.length) {
-    // console.log('end', end, 'categories.length', categories.length);
     renderNewCard(main);
   }
 };
@@ -77,96 +79,29 @@ export const renderCategPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   const categories = await getCategory();
-  // const words = await getWords();
-  const main = document.querySelector('.categ-main') as HTMLElement;
+  updateCardArray(categories);
+  const main = getMainCateg();
   const arrWordsOnCategory = [];
 
   for (let i = 0; i < categories.length; i++) {
-    // const categLength = await ;
-    // console.log(categLength)
     arrWordsOnCategory.push(getWordsByCategory(categories[i].categoryName));
   }
   const arrWordsInCategory = await Promise.all(arrWordsOnCategory);
-  // console.log(arrWordsOnCategory)
 
-  let start = Math.ceil((document.documentElement.clientHeight - 71) / 300) + 4;
-  let mx = start;
+  const plug = () => {};
 
-  // console.log(start);
-  // console.log(document.documentElement.clientHeight);
-
-  let counterObserver = 0;
-
-  rend(0, start, categories, main, arrWordsInCategory);
-
-  let cards = [...document.querySelectorAll('.categ-card')] as HTMLElement[];
-
-  const observer = new IntersectionObserver(
-    (entries, observ) => {
-      entries.forEach((entry) => {
-        // console.log('entries count');
-        if (entry.isIntersecting) {
-          counterObserver++;
-          removeClassList(entry.target, 'observ');
-          // console.log('entry isIntersecting');
-          // console.log('start', start, 'mx', mx);
-          // console.log(counterObserver + 1, start);
-          if (counterObserver + 1 === start) {
-            // console.log('mx', mx, 'categories.length', categories.length);
-            if (mx < categories.length) {
-              addClassList(document.body, 'hidden');
-
-              getLoader().classList.remove('hidden');
-              setTimeout(() => {
-                getLoader().classList.add('hidden');
-                if (mx + mx <= categories.length) {
-                  mx += start;
-                } else {
-                  mx = categories.length;
-                }
-                rend(start, mx, categories, main, arrWordsInCategory);
-                start += start;
-              }, 500);
-            }
-            setTimeout(() => {
-              removeClassList(document.body, 'hidden');
-              cards = [
-                ...document.querySelectorAll('.categ-card'),
-              ] as HTMLElement[];
-              // console.log(cards.length);
-              cards.forEach((card) => {
-                if (checkClass(card, 'observ')) {
-                  observer.observe(card);
-                }
-                // console.log('card count');
-              });
-            }, 650);
-          }
-          // }
-          observ.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 1 },
+  observerPage(
+    LayoutPages.CATEGORIES,
+    heightHeader,
+    heightCard,
+    correctionCoefficient,
+    categories,
+    main,
+    plug,
+    renderCategory,
+    arrWordsInCategory,
   );
 
-  cards.forEach((card) => {
-    if (checkClass(card, 'observ')) {
-      observer.observe(card);
-    }
-  });
-
-  const NUMBER_CIRCLE = 3;
-
-  const loaderScroll = document.createElement(Tags.DIV);
-  loaderScroll.className = 'loader hidden';
-  main.append(loaderScroll);
-
-  for (let i = 0; i < NUMBER_CIRCLE; i++) {
-    const circle = document.createElement(Tags.DIV);
-    circle.className = 'circle';
-    loaderScroll.append(circle);
-  }
-
+  loader(main);
   handlingClicks(main, categories);
 };

@@ -1,10 +1,11 @@
+import { getWordsByCategory } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
 import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { gameProcess, startGame } from '../play/game';
-import { playSoundServer, sound } from '../play/sound';
+import { playingArrOfSounds, playSoundServer, sound } from '../play/sound';
 import { resetStatistic } from '../statistic/reset';
 import { sortStatistic } from '../statistic/sort';
 import { changePage } from '../store/actions';
@@ -22,6 +23,7 @@ import { getArrsElem } from '../utils/get-elems';
 import { getWord } from '../utils/get-word';
 import { IHTMLElems, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateWordArray } from '../utils/update-card-arr';
 import { changeActiveLink } from './links-active';
 
 const checkClasses = (
@@ -43,15 +45,11 @@ const addListener = (card: HTMLDivElement): void => {
 };
 
 const categotySelection = (card: HTMLDivElement): void => {
-  // const word: string = getWord(card);
-  // const index = imgCategories.indexOf(word) + 1;
   const categoryNames = cards[CATEGORY];
-  // console.log(categoryNames)
   if (card) {
     const index = categoryNames.indexOf(card.id) + 1;
     store.dispatch(changePage(index));
     changeActiveLink(index);
-    // console.log(index)
     renderSubject(index);
   }
 };
@@ -68,15 +66,12 @@ const workWithCards = (
     } else if (checkClasses(parent, elem, card, ElemClasses.SUBJECT)) {
       if (front) {
         const word: string = getWord(front);
-        // const page = cards[store.getState().page] as ICards[];
         fullCards.forEach((item) => {
           if (item.word === word) {
             item.train++;
           }
         });
         dispatchInfo(fullCards);
-        // playSound(page, word);
-        // console.log(card)
         playSoundServer(card.id);
       }
     } else if (checkClass(elem, ElemClasses.SVG)) {
@@ -110,12 +105,14 @@ const isGameProcess = (elems: IHTMLElems, elem: HTMLElement): boolean =>
   !checkClass(elems.btnStartGame, ElemClasses.BTN_START_GAME) &&
   !checkClass(elem, ElemClasses.GREAT);
 
-export const selectionHandler = (event: Event): void => {
+export const selectionHandler = async (event: Event): Promise<void> => {
   const elems = getArrsElem();
   const elem = event.target as HTMLElement;
   const card = elem.closest(`.${ElemClasses.MAIN_CARD}`) as HTMLDivElement;
   const front = elem.closest(`.${ElemClasses.FRONT}`) as HTMLDivElement;
-  const titleTh = elem.closest('.title-th') as HTMLTableHeaderCellElement;
+  const titleTh = elem.closest(
+    `.${ElemClasses.TITLE_TH}`,
+  ) as HTMLTableHeaderCellElement;
   if (store.getState().mode === StateApp.TRAIN) {
     workWithCards(elem, card, front);
     if (store.getState().page === objNumberPage.statistic) {
@@ -134,7 +131,10 @@ export const selectionHandler = (event: Event): void => {
     startGame(elem);
   } else if (checkClass(elem, ElemClasses.REPEAT)) {
     if (objGame.arrAudios.length > 0) {
-      sound(objGame.arrAudios[0], IndexSounds.FIRST);
+      const categoryName = cards[CATEGORY][store.getState().page - 1];
+      const words = await getWordsByCategory(categoryName);
+      updateWordArray(words)
+      playingArrOfSounds(words);
     }
   } else if (isGameProcess(elems, elem)) {
     gameProcess(elem);

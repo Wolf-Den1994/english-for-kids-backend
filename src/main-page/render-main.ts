@@ -12,20 +12,25 @@ import { renderRoot } from '../root/root';
 import { handlerMenu, handlerSideBar } from '../sidebar/handler';
 import { renderSidebar } from '../sidebar/sidebar';
 import { addClassList } from '../utils/add-class';
-import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { ElemClasses, Events } from '../utils/enums';
-import { inputSwitcher, label, menu, root } from '../utils/get-elems';
+import {
+  getLinksAll,
+  inputSwitcher,
+  label,
+  menu,
+  root,
+} from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
 export const hiddenStatistic = (): void => {
-  const links = document.querySelectorAll('.menu-link');
+  const links = getLinksAll();
   const link = links[links.length - 2];
-  addClassList(link, 'disabled');
+  addClassList(link, ElemClasses.DISABLED);
 };
 
 export const renderMain = async (): Promise<void> => {
-  const checkUser = localStorage.getItem(LOCAL_STORAGE_USER_ADMIN);
-  if (checkUser) localStorage.removeItem(LOCAL_STORAGE_USER_ADMIN);
+  // const checkUser = localStorage.getItem(LOCAL_STORAGE_USER_ADMIN);
+  // if (checkUser) localStorage.removeItem(LOCAL_STORAGE_USER_ADMIN);
   renderHeader();
   renderBtnSidebar();
   renderSwitcher();

@@ -12,6 +12,7 @@ import { ElemClasses, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import { IHTMLElems, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateWordArray } from '../utils/update-card-arr';
 
 const isPageCategory = (): boolean =>
   store.getState().page !== objNumberPage.main &&
@@ -59,11 +60,9 @@ const changeStateOnPlay = (arr: IWordsMongo[], elems: IHTMLElems): void => {
 export const switchState = async (event: Event): Promise<void> => {
   const elems = getArrsElem();
   const target = event.target as HTMLInputElement;
-  // const categories = await getCategory();
   const categoryName = list[store.getState().page];
-  // console.log('store.getState().page', store.getState().page)
-  // console.log('categoryName', categoryName)
   const words = await getWordsByCategory(categoryName);
+  updateWordArray(words)
   if (target.checked) {
     store.dispatch(changeMode(StateApp.TRAIN));
     if (
@@ -73,9 +72,6 @@ export const switchState = async (event: Event): Promise<void> => {
       changeStateOnTrain(arrDifficultWord, elems);
     }
     if (isPageCategory()) {
-      // console.log(store.getState().page, objNumberPage.main);
-      // console.log(store.getState().page, objNumberPage.statistic);
-      // console.log(store.getState().page, objNumberPage.difficult);
       changeStateOnTrain(words, elems);
     }
   } else {

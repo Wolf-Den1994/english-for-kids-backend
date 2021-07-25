@@ -3,11 +3,11 @@ import { onNavigate } from '../routing/routes';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
-import { ElemClasses, Events, Tags } from '../utils/enums';
+import { ElemClasses, Events, RoutNames, Tags } from '../utils/enums';
 import { getModal, header, overlay } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
-const renderLoginModal = () => {
+const renderLoginModal = (): void => {
   const modal = document.createElement(Tags.DIV);
   modal.className = 'login-modal';
   header().append(modal);
@@ -48,12 +48,12 @@ const renderLoginModal = () => {
   divBtns.append(btnLogin);
 };
 
-const removeClassHiddenModal = () => {
+const removeClassHiddenModal = (): void => {
   removeClassList(overlay(), ElemClasses.HIDDEN_MODAL);
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 };
 
-const closeLoginModal = () => {
+const closeLoginModal = (): void => {
   const elems = getModal();
   header().children[2].remove();
   removeClassHiddenModal();
@@ -66,12 +66,12 @@ const checkUser = async (login: string, password: string): Promise<void> => {
     const userData = await loginHandler(login, password);
     if (userData && userData.token) {
       localStorage.setItem(LOCAL_STORAGE_USER_ADMIN, userData.token);
-      onNavigate('/category');
+      onNavigate(RoutNames.CATEGORY);
     }
   }
 };
 
-const selectionHandlerModal = (event: Event) => {
+const selectionHandlerModal = (event: Event): void => {
   const targetElem = event.target as HTMLElement;
   const elems = getModal();
   if (checkClass(targetElem, ElemClasses.BTN_CANCEL)) {
@@ -85,7 +85,7 @@ export const openLoginModal = async (): Promise<void> => {
   const admin = localStorage.getItem(LOCAL_STORAGE_USER_ADMIN);
 
   if (admin) {
-    onNavigate('/category');
+    onNavigate(RoutNames.CATEGORY);
   } else {
     renderLoginModal();
     addClassList(overlay(), ElemClasses.HIDDEN_MODAL);

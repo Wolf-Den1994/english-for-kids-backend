@@ -1,12 +1,14 @@
 import { onNavigate } from '../routing/routes';
-import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
+import { DUPLICATE, LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
+import { ResponseStatus, RoutNames } from '../utils/enums';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
-const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+// const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+const baseURL = 'http://localhost';
 
 async function checkAuthReponse(response: Response) {
-  if (response.status === 401) {
-    onNavigate('/');
+  if (response.status === ResponseStatus.UNAUTHORIZED) {
+    onNavigate(RoutNames.MAIN);
   }
 }
 
@@ -15,27 +17,25 @@ export async function getCategory(): Promise<ICategoriesMongo[]> {
     method: 'GET',
     headers: { Accept: 'application/json' },
   });
-  // если запрос прошел нормально
   const category: ICategoriesMongo[] = await response.json();
-  // console.log(category);
   return category;
 }
 
-export async function getCategoryByName(name: string): Promise<any> {
-  const response = await fetch(`${baseURL}/api/category/${name}`, {
+export async function getCategoryById(
+  id: string,
+): Promise<ICategoriesMongo> {
+  const response = await fetch(`${baseURL}/api/category/${id}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
   });
-  // если запрос прошел нормально
   const category = await response.json();
-  // console.log(category);
   return category;
 }
 
 export async function createCategory(
   formData: FormData,
   name: string,
-): Promise<any> {
+): Promise<ICategoriesMongo | string> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'POST',
     headers: {
@@ -44,18 +44,18 @@ export async function createCategory(
     body: formData,
   });
   checkAuthReponse(response);
-  if (response.status === 400) {
-    return 'duplicate';
+  if (response.status === ResponseStatus.BAD_REQUEST) {
+    return DUPLICATE;
   }
   const category = await response.json();
   return category;
 }
 
-export async function putCategoryByName(
+export async function putCategoryById(
   formData: FormData,
-  name: string,
+  id: string,
 ): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/category/${name}`, {
+  const response = await fetch(`${baseURL}/api/category/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
@@ -63,17 +63,17 @@ export async function putCategoryByName(
     body: formData,
   });
   checkAuthReponse(response);
-  if (response.ok === true) {
+  if (response.ok) {
     const card = await response.json();
-    // eslint-disable-next-line no-console
-    // console.log(card);
     return card;
   }
   return null;
 }
 
-export async function deleteCategory(name: string): Promise<any> {
-  const response = await fetch(`${baseURL}/api/category/${name}`, {
+export async function deleteCategory(
+  id: string,
+): Promise<ICategoriesMongo | null> {
+  const response = await fetch(`${baseURL}/api/category/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -81,10 +81,8 @@ export async function deleteCategory(name: string): Promise<any> {
     },
   });
   checkAuthReponse(response);
-  if (response.ok === true) {
+  if (response.ok) {
     const category = await response.json();
-    // eslint-disable-next-line no-console
-    // console.log(card);
     return category;
   }
   return null;
@@ -95,9 +93,7 @@ export async function getWords(): Promise<IWordsMongo[]> {
     method: 'GET',
     headers: { Accept: 'application/json' },
   });
-  // если запрос прошел нормально
   const words: IWordsMongo[] = await response.json();
-  // console.log(words);
   return words;
 }
 
@@ -108,16 +104,14 @@ export async function getWordsByCategory(
     method: 'GET',
     headers: { Accept: 'application/json' },
   });
-  // если запрос прошел нормально
   const categLength: IWordsMongo[] = await response.json();
-  // console.log(categLength);
   return categLength;
 }
 
 export async function createWord(
   formData: FormData,
   name: string,
-): Promise<any> {
+): Promise<IWordsMongo | string> {
   const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'POST',
     headers: {
@@ -126,16 +120,15 @@ export async function createWord(
     body: formData,
   });
   checkAuthReponse(response);
-  if (response.status === 400) {
-    return 'duplicate';
+  if (response.status === ResponseStatus.BAD_REQUEST) {
+    return DUPLICATE;
   }
   const word = await response.json();
-  // console.log(word);
   return word;
 }
 
-export async function deleteWord(name: string): Promise<any> {
-  const response = await fetch(`${baseURL}/api/word/${name}`, {
+export async function deleteWord(id: string): Promise<IWordsMongo | null> {
+  const response = await fetch(`${baseURL}/api/word/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -143,20 +136,18 @@ export async function deleteWord(name: string): Promise<any> {
     },
   });
   checkAuthReponse(response);
-  if (response.ok === true) {
+  if (response.ok) {
     const word = await response.json();
-    // eslint-disable-next-line no-console
-    // console.log(card);
     return word;
   }
   return null;
 }
 
-export async function putWordByName(
+export async function putWordById(
   formData: FormData,
-  name: string,
+  id: string,
 ): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/word/${name}`, {
+  const response = await fetch(`${baseURL}/api/word/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
@@ -164,10 +155,8 @@ export async function putWordByName(
     body: formData,
   });
   checkAuthReponse(response);
-  if (response.ok === true) {
+  if (response.ok) {
     const card = await response.json();
-    // eslint-disable-next-line no-console
-    console.log(card);
     return card;
   }
   return null;
@@ -182,7 +171,7 @@ export async function loginHandler(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ login, password }),
   });
-  if (response.ok === true) {
+  if (response.ok) {
     const userData: IUserData = await response.json();
     return userData;
   }
